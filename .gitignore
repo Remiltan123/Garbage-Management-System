@@ -2,3 +2,8 @@ Garbage Detection Model/dataset
 /__pycache__
 Garbage Detection Model/dataset/data.yaml
 Garbage Detection Model/dataset/data.yaml
+backend/node_modules/
+backend/.env
+frontend/node_modules/
+frontend/.env
+/node_modules
