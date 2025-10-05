@@ -1,0 +1,8 @@
+.home-page-bg {
+  background-image: url('../../assets//home.jpeg');
+  background-size: cover;      
+  background-position: center; 
+  background-repeat: no-repeat;
+  width: 100vw;   
+  height: 100vh; 
+}
