@@ -1,5 +1,5 @@
 import './LoginPage.css'
-import awarenessImage from '../../assets/awareness_of_waste_recycling.png'
+import awarenessImage from '../../assets/images/awareness_of_waste_recycling.png'
 
 export function LoginPage() {
     return (
