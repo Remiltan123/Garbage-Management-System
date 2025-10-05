@@ -1,0 +1,48 @@
+.Login-page-bg {
+    background-color: rgb(37, 50, 60);
+    height: 400px;
+    width: 300px;
+    border: 1px solid white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+     overflow: hidden;
+}
+
+.awarenessImage-container {
+    height: 80px;
+    width: 300px;
+}
+
+.awarenessImage-container img {
+    height: 80px;
+    width: 300px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.login-page-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 20px;
+    align-items: center;
+}
+.login-page-input{
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+}
+.login-page-input input {
+    width: 100%;
+    padding: 5px 10px;
+    border-radius: 6px;
+    outline: none; 
+    background-color: #E6F2E6; 
+    color: black;
+    font-size: 14px;
+}
+
+.loin-page-input input::placeholder {
+    color: #999; /* lighter placeholder text */
+}
