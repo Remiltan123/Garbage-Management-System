@@ -5,13 +5,13 @@ import jwt from "jsonwebtoken";
 // Register new user
 export const register = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, contactNumber } = req.body;
 
     // Validate required fields
-    if (!username || !email || !password) {
+    if (!username || !email || !password || !contactNumber) {
       return res.status(400).json({
         success: false,
-        message: "Please provide username, email, and password",
+        message: "Please provide username, email, password, and contact number",
       });
     }
 
@@ -34,6 +34,7 @@ export const register = async (req, res) => {
       username,
       email,
       password: hashedPassword,
+      contactNumber,
     });
 
     await newUser.save();
@@ -53,6 +54,8 @@ export const register = async (req, res) => {
           id: newUser._id,
           username: newUser.username,
           email: newUser.email,
+          contactNumber: newUser.contactNumber,
+          role: newUser.role,
         },
         token,
       },
@@ -115,6 +118,8 @@ export const login = async (req, res) => {
           id: user._id,
           username: user.username,
           email: user.email,
+          contactNumber: user.contactNumber,
+          role: user.role,
         },
         token,
       },
