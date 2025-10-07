@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
+import authRouter from "./routers/authRouter.js";
 
 dotenv.config();
 
@@ -38,6 +39,9 @@ app.get("/", (req, res) => {
     port: PORT,
   });
 });
+
+// Routes
+app.use("/api/auth", authRouter);
 
 // Start server
 app.listen(PORT, () => {

@@ -8,8 +8,6 @@ import { DashBoard } from './Components/DashBoard/DashBoard'
 
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
    <BrowserRouter >
       <Routes>
@@ -20,4 +18,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
