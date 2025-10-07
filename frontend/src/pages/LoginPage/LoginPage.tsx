@@ -1,6 +1,8 @@
 import './LoginPage.css'
 import awarenessImage from '../../assets/images/awareness_of_waste_recycling.png'
-import { useState } from 'react'
+import { useState,  } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 
 const LoginPageDetails = [
     { "label": "UserName", "type": "text", "placeholder": "Name" },
@@ -13,6 +15,7 @@ type PageState = "Login" | "SignUp"
 
 export function LoginPage() {
     const [pageState, SetpageState] = useState<PageState>("Login")
+    const navigate = useNavigate()
 
     const fieldsToShow = LoginPageDetails.filter(detail => {
         if (pageState === "Login") {
@@ -25,12 +28,18 @@ export function LoginPage() {
         SetpageState(prev => prev === "Login" ? "SignUp" : "Login")
     }
 
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+        navigate('/dashboard/wastage-classifier')
+    }
+
+
     return (
         <div className="Login-page-bg">
             <div className='awarenessImage-container'>
                 <img src={awarenessImage} alt="awarenessImage" />
             </div>
-            <form className="login-page-container">
+            <form className="login-page-container" onSubmit={handleSubmit}>
                 <div className='login-page-input'>
                     {fieldsToShow.map((detail, index) => (
                         <>

@@ -15,3 +15,6 @@
 .dash-board :last-child {
     flex: 1;
 }
+.dashboard-content{
+      background-color: rgb(57, 77, 92);
+}

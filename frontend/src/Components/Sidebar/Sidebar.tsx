@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import './Sidebar.css'
 import awarenessImage from '../../assets/images/awareness_of_waste_recycling.png'
+import { FaRecycle, FaSignOutAlt, FaUserAlt } from 'react-icons/fa'
 
 export function Sidebar() {
     return (
@@ -12,22 +13,17 @@ export function Sidebar() {
                 <ul>
                     <li>
                         <NavLink to="wastage-classifier" className={({ isActive }) => isActive ? "active-link" : ""}>
-                            Wastage Classifier
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="home" className={({ isActive }) => isActive ? "active-link" : ""}>
-                            Home
+                            <FaRecycle/> <span>Wastage Classifier</span>
                         </NavLink>
                     </li>
                     <li>
                         <NavLink to="profile" className={({ isActive }) => isActive ? "active-link" : ""}>
-                            Profile
+                            <FaUserAlt/> <span>Profile</span>
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="settings" className={({ isActive }) => isActive ? "active-link" : ""}>
-                            Settings
+                        <NavLink to="/" className={({ isActive }) => isActive ? "active-link" : ""}>
+                           <FaSignOutAlt/> <span>Logout</span>
                         </NavLink>
                     </li>
                 </ul>
