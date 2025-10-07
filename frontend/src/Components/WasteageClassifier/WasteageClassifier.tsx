@@ -7,8 +7,8 @@ import classifierWastage from '../../assets/images/classifierWastage.jpg';
 export function WasteageClassifier() {
   const predictedWaste = 'Plastic'; // Replace with ML prediction
 
-  const getArrowClass = (bin: string) => {
-    return predictedWaste === bin ? 'arrow-visible' : 'arrow-hidden';
+ const getBinClass = (bin: string) => {
+    return predictedWaste === bin ? 'bin bin-highlight' : 'bin';
   };
 
   return (
@@ -44,21 +44,20 @@ export function WasteageClassifier() {
           </p>
         </div>
 
-        <div className="bins-container">
-          <div className="bin">
-            <GiRecycle size={60} color="#ff9800" />
+        
+
+       <div className="bins-container">
+          <div className='bin-highlight'>
+            <GiRecycle size={40} color="#ff9800" />
             <p>Reduce</p>
-            <FaArrowUp size={30} className={getArrowClass('Reduce')} />
           </div>
-          <div className="bin">
-            <FaRecycle size={60} color="#4caf50" />
+          <div className={getBinClass('Reuse')}>
+            <FaRecycle size={40} color="#4caf50" />
             <p>Reuse</p>
-            <FaArrowUp size={30} className={getArrowClass('Reuse')} />
           </div>
-          <div className="bin">
-            <MdOutlineDelete size={60} color="#2196f3" />
+          <div className={getBinClass('Recycle')}>
+            <MdOutlineDelete size={40} color="#2196f3" />
             <p>Recycle</p>
-            <FaArrowUp size={30} className={getArrowClass('Recycle')} />
           </div>
         </div>
       </div>
