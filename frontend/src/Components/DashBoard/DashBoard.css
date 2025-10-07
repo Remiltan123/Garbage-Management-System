@@ -1,0 +1,17 @@
+.dash-board {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+.dash-board-action {
+    display: flex;
+
+}
+.dash-board :first-child {
+    flex: 0 0 15%;
+}
+
+.dash-board :last-child {
+    flex: 1;
+}

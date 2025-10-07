@@ -1,7 +1,30 @@
 import './LoginPage.css'
 import awarenessImage from '../../assets/images/awareness_of_waste_recycling.png'
+import { useState } from 'react'
+
+const LoginPageDetails = [
+    { "label": "UserName", "type": "text", "placeholder": "Name" },
+    { "label": "Email", "type": "email", "placeholder": "Email" },
+    { "label": "Password", "type": "password", "placeholder": "Password" },
+]
+
+type PageState = "Login" | "SignUp"
+
 
 export function LoginPage() {
+    const [pageState, SetpageState] = useState<PageState>("Login")
+
+    const fieldsToShow = LoginPageDetails.filter(detail => {
+        if (pageState === "Login") {
+            return detail.label !== "Email"
+        }
+        return true
+    })
+
+    const togglePage = () => {
+        SetpageState(prev => prev === "Login" ? "SignUp" : "Login")
+    }
+
     return (
         <div className="Login-page-bg">
             <div className='awarenessImage-container'>
@@ -9,26 +32,19 @@ export function LoginPage() {
             </div>
             <form className="login-page-container">
                 <div className='login-page-input'>
-                    <label className="" >UserName</label>
-                    <input type="text" className="" required placeholder='Name'/>
+                    {fieldsToShow.map((detail, index) => (
+                        <>
+                            <label className="login-page-input" key={index}>{detail.label}</label>
+                            <input type={detail.placeholder} className="" required placeholder={detail.placeholder} key={index} />
+                        </>
+                    ))}
                 </div>
-                <div className='login-page-input'>
-                    <label className="login-page-input" >Email</label>
-                    <input type="email" className="" required placeholder='Email'/>
-                </div>
-                <div className='login-page-input'>
-                    <label className="login-page-input" >Password</label>
-                    <input type="password" className="" required placeholder='Password' />
-                </div >
-                <div>
-                    Don't have an account?<span> Sign up</span>
-
-                </div>
-                <button type="submit" className="">
-                    Login
-                </button>
+                {pageState === "Login" ? <><div>Don't have an account? <span onClick={togglePage} className='toggle-link'>SignUp</span></div>
+                    <button type="submit" className="" >{pageState}</button></>
+                    : <><div> Already have an account? <span onClick={togglePage} className='toggle-link' >Login</span></div>
+                        <button type="submit" className="" >{pageState}</button></>
+                }
             </form>
-
         </div>
     )
 }

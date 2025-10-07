@@ -1,0 +1,41 @@
+.sidebar {
+  background-color: rgb(37, 50, 60);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 20%;  
+  
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin: 15px 0;
+}
+
+.sidebar a {
+  text-decoration: none;
+  color: black;
+}
+
+.sidebar a {
+  text-decoration: none;
+  color: white; 
+  padding: 10px;
+  display: block;
+  border-radius: 6px;
+  
+}
+
+.sidebar-img img {
+  width: 100%;          
+  object-fit: contain;    
+  border-radius: 8px;
+}
+
+.sidebar li:hover {
+  background-color: rgb(80, 101, 116);
+}

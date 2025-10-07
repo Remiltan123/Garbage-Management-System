@@ -1,12 +1,12 @@
 .Login-page-bg {
     background-color: rgb(37, 50, 60);
-    height: 400px;
+    height: 390px;
     width: 300px;
     border: 1px solid white;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-     overflow: hidden;
+    overflow: hidden;
 }
 
 .awarenessImage-container {
@@ -31,6 +31,7 @@
 .login-page-input{
     display: flex;
     flex-direction: column;
+    gap:5px;
     margin-right: 20px;
 }
 .login-page-input input {
@@ -45,4 +46,13 @@
 
 .loin-page-input input::placeholder {
     color: #999; 
+}
+
+.toggle-link {
+    cursor: pointer;
+    color: rgb(72, 180, 247);
+    transition: color 0.3s ease; /* smooth color change on hover */
+}
+.toggle-link:hover {
+    color: blue;
 }
