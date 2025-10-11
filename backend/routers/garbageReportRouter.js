@@ -1,10 +1,15 @@
 import express from "express";
 import * as garbageReportController from "../controllers/garbageReportController.js";
+import upload from "../middlewares/upload.js";
 
 const router = express.Router();
 
 // Public routes
-router.post("/reports", garbageReportController.createGarbageReport);
+router.post(
+  "/reports",
+  upload.single("garbageImage"),
+  garbageReportController.createGarbageReport
+);
 
 // Protected routes (add authentication middleware as needed)
 router.get("/reports", garbageReportController.getAllGarbageReports);
