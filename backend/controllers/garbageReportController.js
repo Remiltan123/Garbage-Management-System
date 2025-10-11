@@ -1,0 +1,337 @@
+import GarbageReport from "../models/GarbageReport.js";
+
+// Create a new garbage report
+export const createGarbageReport = async (req, res) => {
+  try {
+    const {
+      reporterName,
+      weight,
+      collectionDeadline,
+      additionalDetails,
+      garbageImage,
+      location,
+    } = req.body;
+
+    // Validate required fields
+    if (!reporterName || !weight || !collectionDeadline || !location) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide all required fields",
+      });
+    }
+
+    // Validate location data
+    if (!location.latitude || !location.longitude || !location.address) {
+      return res.status(400).json({
+        success: false,
+        message: "Complete location data is required",
+      });
+    }
+
+    // Create new report
+    const garbageReport = new GarbageReport({
+      reporterName,
+      reporter: req.user?._id, // Optional: if user is authenticated
+      weight,
+      collectionDeadline,
+      additionalDetails,
+      garbageImage,
+      location,
+    });
+
+    await garbageReport.save();
+
+    res.status(201).json({
+      success: true,
+      message: "Garbage report submitted successfully",
+      data: garbageReport,
+    });
+  } catch (error) {
+    console.error("Error creating garbage report:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "Failed to submit garbage report",
+    });
+  }
+};
+
+// Get all garbage reports (with filters)
+export const getAllGarbageReports = async (req, res) => {
+  try {
+    const {
+      status,
+      collector,
+      page = 1,
+      limit = 10,
+      sortBy = "-createdAt",
+    } = req.query;
+
+    const query = {};
+
+    if (status) {
+      query.status = status;
+    }
+
+    if (collector) {
+      query.collector = collector;
+    }
+
+    const skip = (page - 1) * limit;
+
+    const reports = await GarbageReport.find(query)
+      .populate("collector", "name email")
+      .populate("reporter", "name email")
+      .sort(sortBy)
+      .skip(skip)
+      .limit(parseInt(limit));
+
+    const total = await GarbageReport.countDocuments(query);
+
+    res.status(200).json({
+      success: true,
+      data: reports,
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total,
+        pages: Math.ceil(total / limit),
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching garbage reports:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch garbage reports",
+    });
+  }
+};
+
+// Get single garbage report by ID
+export const getGarbageReportById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const report = await GarbageReport.findById(id)
+      .populate("collector", "name email phone")
+      .populate("reporter", "name email");
+
+    if (!report) {
+      return res.status(404).json({
+        success: false,
+        message: "Garbage report not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: report,
+    });
+  } catch (error) {
+    console.error("Error fetching garbage report:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch garbage report",
+    });
+  }
+};
+
+// Update garbage report status
+export const updateGarbageReportStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status, rejectionReason } = req.body;
+
+    const validStatuses = ["pending", "in-progress", "collected", "rejected"];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid status value",
+      });
+    }
+
+    const report = await GarbageReport.findById(id);
+
+    if (!report) {
+      return res.status(404).json({
+        success: false,
+        message: "Garbage report not found",
+      });
+    }
+
+    report.status = status;
+
+    if (status === "rejected" && rejectionReason) {
+      report.rejectionReason = rejectionReason;
+    }
+
+    await report.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Garbage report status updated successfully",
+      data: report,
+    });
+  } catch (error) {
+    console.error("Error updating garbage report status:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to update garbage report status",
+    });
+  }
+};
+
+// Assign collector to garbage report
+export const assignCollector = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { collectorId } = req.body;
+
+    if (!collectorId) {
+      return res.status(400).json({
+        success: false,
+        message: "Collector ID is required",
+      });
+    }
+
+    const report = await GarbageReport.findById(id);
+
+    if (!report) {
+      return res.status(404).json({
+        success: false,
+        message: "Garbage report not found",
+      });
+    }
+
+    report.collector = collectorId;
+    report.status = "in-progress";
+
+    await report.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Collector assigned successfully",
+      data: report,
+    });
+  } catch (error) {
+    console.error("Error assigning collector:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to assign collector",
+    });
+  }
+};
+
+// Delete garbage report
+export const deleteGarbageReport = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const report = await GarbageReport.findByIdAndDelete(id);
+
+    if (!report) {
+      return res.status(404).json({
+        success: false,
+        message: "Garbage report not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Garbage report deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting garbage report:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete garbage report",
+    });
+  }
+};
+
+// Get reports by collector
+export const getReportsByCollector = async (req, res) => {
+  try {
+    const { collectorId } = req.params;
+    const { status, page = 1, limit = 10 } = req.query;
+
+    const query = { collector: collectorId };
+
+    if (status) {
+      query.status = status;
+    }
+
+    const skip = (page - 1) * limit;
+
+    const reports = await GarbageReport.find(query)
+      .sort("-createdAt")
+      .skip(skip)
+      .limit(parseInt(limit));
+
+    const total = await GarbageReport.countDocuments(query);
+
+    res.status(200).json({
+      success: true,
+      data: reports,
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total,
+        pages: Math.ceil(total / limit),
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching collector reports:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch collector reports",
+    });
+  }
+};
+
+// Get statistics
+export const getReportStatistics = async (req, res) => {
+  try {
+    const totalReports = await GarbageReport.countDocuments();
+    const pendingReports = await GarbageReport.countDocuments({
+      status: "pending",
+    });
+    const inProgressReports = await GarbageReport.countDocuments({
+      status: "in-progress",
+    });
+    const collectedReports = await GarbageReport.countDocuments({
+      status: "collected",
+    });
+    const rejectedReports = await GarbageReport.countDocuments({
+      status: "rejected",
+    });
+
+    const totalWeight = await GarbageReport.aggregate([
+      { $match: { status: "collected" } },
+      { $group: { _id: null, total: { $sum: "$weight" } } },
+    ]);
+
+    const totalPoints = await GarbageReport.aggregate([
+      { $match: { status: "collected" } },
+      { $group: { _id: null, total: { $sum: "$points" } } },
+    ]);
+
+    res.status(200).json({
+      success: true,
+      data: {
+        totalReports,
+        pendingReports,
+        inProgressReports,
+        collectedReports,
+        rejectedReports,
+        totalWeightCollected: totalWeight[0]?.total || 0,
+        totalPointsAwarded: totalPoints[0]?.total || 0,
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching statistics:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch statistics",
+    });
+  }
+};

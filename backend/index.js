@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import authRouter from "./routers/authRouter.js";
 import adminRouter from "./routers/adminRouter.js";
+import garbageReportRouter from "./routers/garbageReportRouter.js";
 
 dotenv.config();
 
@@ -44,6 +45,7 @@ app.get("/", (req, res) => {
 // Routes
 app.use("/api/auth", authRouter);
 app.use("/api/admin", adminRouter);
+app.use("/api/garbage", garbageReportRouter);
 // Start server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
