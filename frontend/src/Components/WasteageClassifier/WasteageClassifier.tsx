@@ -1,51 +1,100 @@
 import './WasteageClassifier.css';
-import { FaUpload, FaArrowUp, FaRecycle } from 'react-icons/fa';
+import { FaUpload, FaRecycle } from 'react-icons/fa';
 import { GiRecycle } from 'react-icons/gi';
 import { MdOutlineDelete } from 'react-icons/md';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import classifierWastage from '../../assets/images/home.jpeg';
-import {predictWaste} from '../../utility/api'
+import { predictWaste } from '../../utility/api';
+import { Wastagedata, Waste3R } from '../../utility/WastageData';
+import { RecomandSystem } from '../Recomand/Recomand';
+
+type Prediction = {
+  waste: string;
+  confidence: number | null;
+  description: string;
+};
 
 export function WasteageClassifier() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [predictedWaste, setPredictedWaste] = useState<string>('');
-  const [confidence, setConfidence] = useState<number | null>(null);
-  
+  const [prediction, setPrediction] = useState<Prediction | null>({
+    waste: '',
+    confidence: null,
+    description: '',
+  });
+
+  useEffect(() => {
+    const savedImage = localStorage.getItem('uploadedImage');
+    const savedPrediction = localStorage.getItem('predictionData');
+    if (savedImage) setSelectedImage(savedImage);
+    if (savedPrediction) setPrediction(JSON.parse(savedPrediction));
+  }, []);
+
+  const toBase64 = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+    });
 
   const getBinClass = (bin: string) => {
-    return predictedWaste === bin ? 'bin bin-highlight' : 'bin';
+    if (prediction?.waste) {
+      const wasteType = prediction?.waste.toLowerCase().replace(/\s/g, '');
+      const waste3Rs = Waste3R[wasteType as keyof typeof Waste3R];
+      return waste3Rs?.includes(bin) ? 'bin bin-highlight' : 'bin';
+    }
+    return 'bin';
   };
 
-  const handleImageUpload = (event:any) => {
+
+  const handleImageUpload = async (event: any) => {
     const file = event.target.files?.[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setSelectedImage(imageUrl);
-      setSelectedFile(file)
+      const base64 = await toBase64(file);
+      setSelectedImage(base64);
+      setSelectedFile(file);
+      localStorage.setItem('uploadedImage', base64);
     }
   };
 
   const handleClassify = async () => {
     if (!selectedFile) {
-      alert("Please upload an image first!");
+      alert('Please upload an image first!');
       return;
     }
+
     try {
       const result = await predictWaste(selectedFile);
-      setPredictedWaste(result.class);
-      setConfidence(result.confidence);
+      const newPrediction: Prediction = {
+        waste: result.class,
+        confidence: result.confidence,
+        description: '',
+      };
+
+      const foundWastage = Wastagedata.find(
+        (item) => item.type.toLowerCase() === result.class.toLowerCase()
+      );
+
+      const wastageDescription = foundWastage
+        ? foundWastage.description
+        : 'No description available for this waste type.';
+
+      newPrediction.description = wastageDescription;
+      setPrediction(newPrediction);
+
+      localStorage.setItem('predictionData', JSON.stringify(newPrediction));
+      if (selectedImage) {
+        localStorage.setItem('uploadedImage', selectedImage);
+      }
     } catch (error) {
-      console.error("Prediction failed:", error);
-      alert("Prediction failed. Check backend connection.");
+      console.error('Prediction failed:', error);
+      alert('Prediction failed.');
     }
   };
 
-
   return (
     <div className="wasteage-classifier-container">
-
-      {/* Left Panel */}
       <div className="classifier-left">
         <h2>Classify Your Waste Material</h2>
         <div className="image-preview">
@@ -54,7 +103,7 @@ export function WasteageClassifier() {
 
         <p>Click the image upload icon below to upload an image.</p>
 
-       <div className="upload-icon">
+        <div className="upload-icon">
           <label htmlFor="file-upload" className="upload-label">
             <FaUpload size={40} style={{ cursor: 'pointer' }} />
           </label>
@@ -67,24 +116,24 @@ export function WasteageClassifier() {
           />
         </div>
 
-        <button className="classify-btn" onClick={handleClassify}>Classify your waste material</button>
+        <button className="classify-btn" onClick={handleClassify}>
+          Classify your waste material
+        </button>
       </div>
 
-      {/* Right Panel */}
       <div className="classifier-right">
         <div>
           <h2>
-            Waste classified as <span className="highlight">{predictedWaste}</span>
+            Waste classified as <span className="highlight">{prediction?.waste}</span>
+            {" "}With Confidence <span className="highlight">{prediction?.confidence != null ? (
+              <span className="highlight">{(prediction.confidence * 100).toFixed(2)} %</span>
+            ) : (<></>)}</span>
           </h2>
-          <p>
-            Plastic recycling is the process of recovering scrap or waste plastic and reprocessing the material into useful products. Due to purposefully misleading symbols on plastic packaging and numerous technical hurdles, less than 10% of plastic has ever been recycled. Compared with the lucrative recycling of metal, and similar to the low value of glass recycling, plastic polymers recycling is often more challenging because of low density and low value.<br />Materials recovery facilities are responsible for sorting and processing plastics. As of 2019, due to limitations in their economic viability, these facilities have struggled to make a meaningful contribution to the plastic supply chain. The plastics industry has known since at least the 1970s that recycling of most plastics is unlikely because of these limitations. However, the industry has lobbied for the expansion of recycling while these companies have continued to increase the amount of virgin plastic being produced.
-          </p>
+          <p>{prediction?.description}</p>
         </div>
 
-
-
         <div className="bins-container">
-          <div className='bin-highlight'>
+          <div className={getBinClass('Reduce')}>
             <GiRecycle size={40} color="#ff9800" />
             <p>Reduce</p>
           </div>
@@ -97,6 +146,8 @@ export function WasteageClassifier() {
             <p>Recycle</p>
           </div>
         </div>
+
+        <RecomandSystem wasteType={prediction?.waste || "Plastic"} />
       </div>
     </div>
   );

@@ -11,6 +11,6 @@ export const predictWaste = async (file: File) => {
         throw new Error("Failed to get prediction");
     }
     const data = await response.json();
-    console.log(".....", data)
+    console.log(".....>", data)
     return data;
 }
