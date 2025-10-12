@@ -48,7 +48,7 @@ export const Waste3R = {
   Ewaste: ['Reduce', 'Recycle'],
   glass: ['Reduce', 'Reuse', 'Recycle'],
   LightBlubs: ['Reduce', 'Recycle'],
-  metal: ['Reduce', 'Reuse', 'Recycle'],
+  metal: ['Reduce' , 'Recycle'],
   organic: ['Reduce', 'Reuse', 'Recycle'],
   paper: ['Reduce', 'Reuse', 'Recycle'],
   plastic: ['Reduce', 'Reuse', 'Recycle']
