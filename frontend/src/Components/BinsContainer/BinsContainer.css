@@ -1,0 +1,25 @@
+
+.bins-container {
+  display: flex;
+  gap: 100px;
+  margin-top: 20px;
+}x
+
+.bin {
+  position: relative;
+  text-align: center;
+}
+
+.bin p,.bin-highlight p {
+  font-weight: bold;
+  margin-top: -5px;
+}
+
+.bin-highlight {
+  box-shadow: 0 0 15px 5px rgba(212, 175, 55, 0.7); /* gold glow */
+  border-radius: 10px;
+  animation: glow 1s infinite alternate;
+  transition: all 0.3s ease-in-out;
+  height: 70px;
+  text-align: center;
+}

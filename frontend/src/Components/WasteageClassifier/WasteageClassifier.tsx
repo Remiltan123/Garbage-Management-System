@@ -1,12 +1,11 @@
 import './WasteageClassifier.css';
-import { FaUpload, FaRecycle } from 'react-icons/fa';
-import { GiRecycle } from 'react-icons/gi';
-import { MdOutlineDelete } from 'react-icons/md';
+import { FaUpload } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
 import classifierWastage from '../../assets/images/home.jpeg';
 import { predictWaste } from '../../utility/api';
 import { Wastagedata, Waste3R } from '../../utility/WastageData';
-import { RecomandSystem } from '../Recomand/Recomand';
+import { BinsContainer } from '../BinsContainer/BinsContainer';
+import { SearchAI } from '../Recomand/Recomand';
 
 type Prediction = {
   waste: string;
@@ -132,22 +131,9 @@ export function WasteageClassifier() {
           <p>{prediction?.description}</p>
         </div>
 
-        <div className="bins-container">
-          <div className={getBinClass('Reduce')}>
-            <GiRecycle size={40} color="#ff9800" />
-            <p>Reduce</p>
-          </div>
-          <div className={getBinClass('Reuse')}>
-            <FaRecycle size={40} color="#4caf50" />
-            <p>Reuse</p>
-          </div>
-          <div className={getBinClass('Recycle')}>
-            <MdOutlineDelete size={40} color="#2196f3" />
-            <p>Recycle</p>
-          </div>
-        </div>
+        <BinsContainer getBinClass={getBinClass}/>
 
-        <RecomandSystem wasteType={prediction?.waste || "Plastic"} />
+        <SearchAI/>
       </div>
     </div>
   );

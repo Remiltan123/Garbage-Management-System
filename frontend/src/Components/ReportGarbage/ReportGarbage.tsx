@@ -180,7 +180,7 @@ export function ReportGarbage() {
                 Choose Image
               </label>
               {garbageImage && (
-                <div className="image-preview">
+                <div className="report-image-preview ">
                   <img src={garbageImage} alt="Uploaded garbage preview" />
                 </div>
               )}

@@ -1,49 +1,54 @@
-import './Recomand.css'
-import { useState } from 'react';
-import { Waste3R } from '../../utility/WastageData';
+import React, { useState } from "react";
+import "./Recomand.css";
 
-type RecomandSystemProps = {
-  wasteType: string;
-};
+export const SearchAI: React.FC = () => {
+  const [query, setQuery] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [loading, setLoading] = useState(false);
 
-export function RecomandSystem({ wasteType }: RecomandSystemProps) {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!query.trim()) return;
 
-  const actions = Waste3R[wasteType.toLowerCase() as keyof typeof Waste3R] || [];
+    setLoading(true);
+    setAnswer("");
 
-  // FAQs for each action
-  const actionDescriptions: Record<string, string> = {
-    Reduce: `To reduce ${wasteType} waste, try minimizing usage and opting for longer-lasting or energy-efficient alternatives.`,
-    Reuse: `Find creative ways to reuse ${wasteType} materials before discarding. Repair or repurpose whenever possible.`,
-    Recycle: `Ensure ${wasteType} items are properly disposed of at recycling facilities. Follow your local recycling guidelines.`,
-  };
+    try {
+      const res = await fetch("http://localhost:5000/api/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: query }),
+      });
 
-  const handleToggle = (index: number) => {
-    setActiveIndex(prev => (prev === index ? null : index));
+      const data = await res.json();
+      setAnswer(data.answer || "No answer found.");
+    } catch (error) {
+      setAnswer("Error fetching answer.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="recomand-container">
-      <h2>Recommended Actions for {wasteType}</h2>
-      {actions.length === 0 ? (
-        <p>No specific 3R recommendations available for this waste type.</p>
-      ) : (
-        actions.map((action, index) => (
-          <div key={index} className="faq-item">
-            <button
-              className={`faq-question ${activeIndex === index ? 'active' : ''}`}
-              onClick={() => handleToggle(index)}
-            >
-              How can I {action.toLowerCase()} {wasteType}?
-            </button>
-            {activeIndex === index && (
-              <div className="faq-answer">
-                <p>{actionDescriptions[action]}</p>
-              </div>
-            )}
-          </div>
-        ))
+    <div className="search-ai-container">
+      <form onSubmit={handleSearch}>
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Ask anything about waste recycling..."
+        />
+        <button type="submit" disabled={loading}>
+          {loading ? "Thinking..." : "Ask AI"}
+        </button>
+      </form>
+
+      {answer && (
+        <div className="ai-answer">
+          <h3>AI Answer:</h3>
+          <p>{answer}</p>
+        </div>
       )}
     </div>
   );
-}
+};
