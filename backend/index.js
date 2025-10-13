@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import authRouter from "./routers/authRouter.js";
 import adminRouter from "./routers/adminRouter.js";
 import garbageReportRouter from "./routers/garbageReportRouter.js";
+import aiRecomandRouter from './routers/aiRecomandRouter.js'
 
 dotenv.config();
 
@@ -30,10 +31,9 @@ const connectDB = async () => {
   }
 };
 
-// Connect to database
 connectDB();
 
-// Basic route
+
 app.get("/", (req, res) => {
   res.json({
     message: "Garbage Management System API",
@@ -42,10 +42,12 @@ app.get("/", (req, res) => {
   });
 });
 
-// Routes
+
 app.use("/api/auth", authRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/garbage", garbageReportRouter);
+app.use("/api/ask", aiRecomandRouter)
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
