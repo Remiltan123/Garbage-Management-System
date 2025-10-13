@@ -48,6 +48,18 @@ app.use("/api/admin", adminRouter);
 app.use("/api/garbage", garbageReportRouter);
 app.use("/api/ask", aiRecomandRouter)
 
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+app.get("/api/list-models", async (req, res) => {
+  try {
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const models = await genAI.listModels();
+    res.json(models);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
