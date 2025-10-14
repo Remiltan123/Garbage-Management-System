@@ -128,12 +128,14 @@ export function WasteageClassifier() {
               <span className="highlight">{(prediction.confidence * 100).toFixed(2)} %</span>
             ) : (<></>)}</span>
           </h2>
-          <p>{prediction?.description}</p>
+          {prediction?.description.split("\n").map((line, index) => (
+            <p key={index} style={{ lineHeight: 1.2}}>{line}</p>
+          ))}
         </div>
 
-        <BinsContainer getBinClass={getBinClass}/>
+        <BinsContainer getBinClass={getBinClass} />
 
-        <SearchAI/>
+        <SearchAI />
       </div>
     </div>
   );
