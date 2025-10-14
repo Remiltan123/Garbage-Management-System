@@ -1,3 +1,5 @@
+const base_url = 'http://localhost:3000';
+import { RegisterDetails, RegisterResponse, LoginDetails } from "../Model/model";
 
 export const predictWaste = async (file: File) => {
     const formdata = new FormData();
@@ -17,7 +19,7 @@ export const predictWaste = async (file: File) => {
 
 export const askQuestion = async (question: string): Promise<string> => {
     try {
-        const response = await fetch("http://localhost:3000/api/ask/question", {
+        const response = await fetch(`${base_url}/api/ask/question`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ question }),
@@ -33,3 +35,51 @@ export const askQuestion = async (question: string): Promise<string> => {
         return "⚠️ Error fetching answer. Please try again.";
     }
 }
+
+export const userRegister = async (data: RegisterDetails) : Promise<RegisterResponse> => {
+    try {
+        const res = await fetch(`${base_url}/api/auth/register`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        if(!res.ok){
+            console.log(res.json())
+            throw new Error("Registration failed!");
+        }
+
+        const result = await res.json();
+        console.log(result)
+        return { success: true, result: result} 
+       
+    } catch (error) {
+        console.error("Register error:", error);
+        return { success: false, message: "Registration failed" };
+    }
+};
+
+
+export const userLogin = async (data: LoginDetails) => {
+  console.log(data);
+  try {
+    const res = await fetch(`${base_url}/api/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    const result = await res.json(); 
+
+    if (!res.ok || !result.success) {
+      console.error("Login failed:", result.message);
+      return { success: false, message: result.message};
+    }
+
+    return { success: true, data: result.data, token: result.data?.token };
+  } catch (error) {
+    console.error("Login error:", error);
+    return { success: false, message: "Login failed due to a network error." };
+  }
+};
+

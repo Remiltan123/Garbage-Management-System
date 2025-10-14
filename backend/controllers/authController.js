@@ -2,20 +2,17 @@ import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-// Register new user
 export const register = async (req, res) => {
   try {
-    const { username, email, password, contactNumber } = req.body;
+    const { username, email, password, contactnumber, role } = req.body;
 
-    // Validate required fields
-    if (!username || !email || !password || !contactNumber) {
+    if (!username || !email || !password || !contactnumber || !role) {
       return res.status(400).json({
         success: false,
-        message: "Please provide username, email, password, and contact number",
+        message: "Please provide necessary details",
       });
     }
 
-    // Check if user already exists
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
@@ -25,21 +22,19 @@ export const register = async (req, res) => {
       });
     }
 
-    // Hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create new user
     const newUser = new User({
       username,
       email,
       password: hashedPassword,
-      contactNumber,
+      contactNumber: contactnumber,
+      role: role.toLowerCase(),
     });
 
     await newUser.save();
 
-    // Generate JWT token
     const token = jwt.sign(
       { id: newUser._id, username: newUser.username },
       process.env.JWT_SECRET,
@@ -54,7 +49,7 @@ export const register = async (req, res) => {
           id: newUser._id,
           username: newUser.username,
           email: newUser.email,
-          contactNumber: newUser.contactNumber,
+          contactNumber: newUser.contactnumber,
           role: newUser.role,
         },
         token,
@@ -70,12 +65,10 @@ export const register = async (req, res) => {
   }
 };
 
-// Login user
+
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    // Validate required fields
     if (!email || !password) {
       return res.status(400).json({
         success: false,
@@ -83,9 +76,7 @@ export const login = async (req, res) => {
       });
     }
 
-    // Find user by email
     const user = await User.findOne({ email });
-
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -93,7 +84,6 @@ export const login = async (req, res) => {
       });
     }
 
-    // Verify password
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
@@ -103,7 +93,6 @@ export const login = async (req, res) => {
       });
     }
 
-    // Generate JWT token
     const token = jwt.sign(
       { id: user._id, username: user.username },
       process.env.JWT_SECRET,
@@ -118,7 +107,7 @@ export const login = async (req, res) => {
           id: user._id,
           username: user.username,
           email: user.email,
-          contactNumber: user.contactNumber,
+          contactNumber: user.contactnumber,
           role: user.role,
         },
         token,
