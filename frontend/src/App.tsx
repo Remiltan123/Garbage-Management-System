@@ -24,12 +24,15 @@ import { DashBoard } from "./Components/DashBoard/DashBoard";
 import { WasteageClassifier } from "./Components/WasteageClassifier/WasteageClassifier";
 import { ReportGarbage } from "./Components/ReportGarbage/ReportGarbage";
 import { HomePage } from "./pages/HomePage/HomePage";
+import AdminPage from "./pages/AdminPage/AdminPage";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/admin" element={<AdminPage />} />
+
         <Route path="/dashboard" element={<DashBoard />}>
           <Route path="wastage-classifier" element={<WasteageClassifier />} />
           <Route path="report-garbage" element={<ReportGarbage />} />

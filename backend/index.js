@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import authRouter from "./routers/authRouter.js";
 import adminRouter from "./routers/adminRouter.js";
 import garbageReportRouter from "./routers/garbageReportRouter.js";
-import aiRecomandRouter from './routers/aiRecomandRouter.js'
+import aiRecomandRouter from "./routers/aiRecomandRouter.js";
 
 dotenv.config();
 
@@ -18,6 +18,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Serve static files from uploads directory
+app.use("/uploads", express.static("uploads"));
 
 // MongoDB connection
 const connectDB = async () => {
@@ -33,7 +36,6 @@ const connectDB = async () => {
 
 connectDB();
 
-
 app.get("/", (req, res) => {
   res.json({
     message: "Garbage Management System API",
@@ -42,11 +44,10 @@ app.get("/", (req, res) => {
   });
 });
 
-
 app.use("/api/auth", authRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/garbage", garbageReportRouter);
-app.use("/api/ask", aiRecomandRouter)
+app.use("/api/ask", aiRecomandRouter);
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
