@@ -1,6 +1,6 @@
 import './LoginPage.css'
 import awarenessImage from '../../assets/images/awareness_of_waste_recycling.png'
-import { useState,  } from 'react'
+import { useState, } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 
@@ -8,6 +8,7 @@ const LoginPageDetails = [
     { "label": "UserName", "type": "text", "placeholder": "Name" },
     { "label": "Email", "type": "email", "placeholder": "Email" },
     { "label": "Password", "type": "password", "placeholder": "Password" },
+    { "label": "Role", "type": "", "placeholder": "" },
 ]
 
 type PageState = "Login" | "SignUp"
@@ -19,7 +20,7 @@ export function LoginPage() {
 
     const fieldsToShow = LoginPageDetails.filter(detail => {
         if (pageState === "Login") {
-            return detail.label !== "Email"
+            return detail.label !== "Email" && detail.label !== "Role"
         }
         return true
     })
@@ -35,7 +36,7 @@ export function LoginPage() {
 
 
     return (
-        <div className="Login-page-bg">
+        <div className="Login-page-bg" style={{ height: pageState === "SignUp" ? "480px" : "360px" }}>
             <div className='awarenessImage-container'>
                 <img src={awarenessImage} alt="awarenessImage" />
             </div>
@@ -44,7 +45,34 @@ export function LoginPage() {
                     {fieldsToShow.map((detail, index) => (
                         <>
                             <label className="login-page-input" key={index}>{detail.label}</label>
-                            <input type={detail.placeholder} className="" required placeholder={detail.placeholder} key={index} />
+                            {detail.label === 'Role' && pageState === "SignUp" ? (
+                                <div key={index} className="role-radio-group">
+                                    <label>
+                                        <input type="radio" name="role" value="reporter" required
+                                            onChange={(e) => console.log(e.target.value)} 
+                                        /> Reporter 
+                                    </label>
+                                    <label>
+                                        <input
+                                            type="radio"
+                                            name="role"
+                                            value="collector"
+                                            required
+                                            onChange={(e) => console.log(e.target.value)}
+                                        />
+                                        Collector
+                                    </label>
+                                </div>
+                            ) : (
+                                <input
+                                    type={detail.placeholder}
+                                    className=""
+                                    required
+                                    placeholder={detail.placeholder}
+                                    key={index}
+                                />
+                            )}
+
                         </>
                     ))}
                 </div>
