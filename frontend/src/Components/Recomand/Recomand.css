@@ -3,7 +3,6 @@
   justify-content: center;
   align-items: flex-start;
   padding: 40px 20px;
-  min-height: 100vh;
 }
 
 .ai-search-box {
@@ -12,10 +11,12 @@
   padding: 30px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   animation: fadeIn 0.5s ease;
+  transition: width 0.5s ease; 
+  width: 600px; 
 }
 
+
 .ai-search-box h2 {
-  text-align: center;
   color: #2d3748;
   margin-bottom: 20px;
 }
@@ -23,8 +24,8 @@
 
 .ai-form {
   display: flex;
-  gap: 1px; /* space between input and button */
-  width: 100%;
+  gap: 1px;
+  margin-top: 10px; 
 }
 
 .ai-input {
@@ -34,28 +35,28 @@
   border-radius: 10px;
   font-size: 16px;
   transition: 0.3s;
-  min-width: 340px;
+  min-width: 80%;
+  outline: none;
 }
 
 .ai-btn {
-  flex: 1; /* button takes 1 part */
-  background-color: #3b82f6;
+  flex: 1; 
   color: white;
+  background-color: rgb(51, 50, 50);
   border: none;
   border-radius: 10px;
   cursor: pointer;
   font-weight: bold;
-  transition: background 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 10px; /* ensures button isn't too small */
-  max-width: 20px;
+  transition: background 0.3s; 
+  display: flex;             
+  align-items: center;      
+  justify-content: center;    
+  height: 50px;             
 }
 
 
 .ai-btn:hover {
-  background-color: #2563eb;
+  background-color: black;
 }
 
 .ai-answer-card {
@@ -78,27 +79,21 @@
   color: #333;
 }
 
-
-.loader {
+.spinner-wrapper {
   display: flex;
+  align-items: center;
   justify-content: center;
-  margin-top: 20px;
 }
 
-.dot {
-  width: 10px;
-  height: 10px;
-  margin: 0 6px;
-  background: #3b82f6;
-  border-radius: 50%;
-  animation: bounce 1.2s infinite;
+.ai-answer-card h3 {
+  color: #111827;
+  font-weight: 600;
+  margin-bottom: 3px;
 }
 
-.dot:nth-child(2) {
-  animation-delay: 0.2s;
-}
-.dot:nth-child(3) {
-  animation-delay: 0.4s;
+.ai-answer-card h2 {
+  margin-bottom: 8px;
+  gap: 20px;
 }
 
 @keyframes bounce {
