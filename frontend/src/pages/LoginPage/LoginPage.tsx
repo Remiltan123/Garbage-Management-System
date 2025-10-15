@@ -45,8 +45,7 @@ export function LoginPage() {
         e.preventDefault();
 
         try {
-            const res = pageState === "SignUp"
-                ? await userRegister(formData)
+            const res = pageState === "SignUp"  ? await userRegister(formData)
                 : await userLogin(formData);
 
             if (res.success) {
@@ -57,7 +56,9 @@ export function LoginPage() {
                     className: "custom-toast-success",
                 });
 
-                navigate('/dashboard/wastage-classifier');
+                res.data.user.role === "collector" ?
+                navigate('/collector') :  navigate('/dashboard/wastage-classifier');
+               
             } else {
                 toast.error(res.message || "Something went wrong!", {
                     position: "top-right",

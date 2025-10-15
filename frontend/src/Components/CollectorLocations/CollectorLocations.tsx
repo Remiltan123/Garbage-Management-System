@@ -26,7 +26,7 @@ export function CollectorLocations() {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const collectorId = "68ef765253e2a08a96e88aa7"; // Hardcoded for now
+        const collectorId = "68ef765253e2a08a96e88aa7"; 
         const response = await getCollectorGarbageReports(collectorId);
         if (response.success) {
           setReports(response.data);

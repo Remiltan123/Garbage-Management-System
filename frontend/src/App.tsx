@@ -16,7 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/admin" element={<AdminPage />} />
-        <Route path="/collector" element={<CollectorPage />} />
+          <Route path="/collector" element={<CollectorPage />} />
 
           <Route path="/dashboard" element={<DashBoard />}>
             <Route path="wastage-classifier" element={<WasteageClassifier />} />

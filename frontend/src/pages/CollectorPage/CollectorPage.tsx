@@ -2,11 +2,16 @@ import { useState } from "react";
 import "./CollectorPage.css";
 import { CollectorSidebar } from "../../Components/CollectorSidebar/CollectorSidebar";
 import { CollectorLocations } from "../../Components/CollectorLocations/CollectorLocations";
+import { useNavigate } from "react-router-dom";
 
 const CollectorPage = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("locations");
 
   const handleTabChange = (tab: string) => {
+    if(tab === "Logout"){
+      navigate('/')
+    }
     setActiveTab(tab);
   };
 
