@@ -1,6 +1,7 @@
 import "./ReportGarbage.css";
 import { FaSpinner } from "react-icons/fa";
 import { useState } from "react";
+import { toastError, toastSucces, toastWarn } from "../../Model/toast";
 
 type LocationData = {
   latitude: number;
@@ -33,8 +34,7 @@ export function ReportGarbage() {
     const file = event.target.files?.[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        // 5MB limit
-        alert("Image size should be less than 5MB.");
+        toastWarn("Image size should be less than 5MB.")
         return;
       }
       const base64 = await toBase64(file);
@@ -92,14 +92,12 @@ export function ReportGarbage() {
     e.preventDefault();
 
     if (!reporterName.trim() || !weight || !collectionDeadline || !location) {
-      alert(
-        "Please fill in all required fields (*) and get your location before submitting."
-      );
+      toastError("Please fill in all required fields")
       return;
     }
 
     if (parseFloat(weight) <= 0) {
-      alert("Weight must be greater than 0.");
+      toastWarn("Weight must be greater than 0.");
       return;
     }
 
@@ -119,10 +117,8 @@ export function ReportGarbage() {
     };
 
     console.log("Report Data:", reportData);
-    // Here you can add actual API call: await submitGarbageReport(reportData);
-
-    alert(
-      "Garbage report submitted successfully! Thank you for helping keep our city clean."
+    toastSucces(
+      "Garbage report submitted successfully!"
     );
 
     // Reset form
@@ -173,7 +169,7 @@ export function ReportGarbage() {
               />
               <label
                 htmlFor="garbageImage"
-                className="upload-label"
+                className="report-upload-label"
                 role="button"
                 tabIndex={0}
               >

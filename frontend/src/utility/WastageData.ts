@@ -8,11 +8,11 @@ export const Wastagedata = [
         description: "Textile recycling is the process of recovering fiber, yarn or fabric and reprocessing the textile material into useful products. \nTextile waste products are gathered from different sources and are then sorted and processed depending on their condition, composition, and resale value. The end result of this processing can vary, from the production of energy and chemicals to new articles of clothing.Due to a recent trend of over consumption and waste generation in global fashion culture, textile recycling has become a key focus of worldwide sustainability efforts. \nGlobalization has led to a \"fast fashion\" trend where clothes are considered by many consumers to be disposable due to their increasingly lower prices. The development of recycled technology has allowed the textile industry to produce vast amounts of products that deplete natural resources."
     },
      {
-        type: "LightBlubs",
+        type: "Light blubs",
         description: "Recycling prevents the release of hazardous materials into the environment. Mercury, an extremely toxic heavy metal, is used in fluorescent light bulbs to increase energy efficiency. \nIn addition to mercury, some HID bulbs contain radioactive substances like Krypton-85 and thorium used for quick and easy light ignition.LEDs on the other hand do not contain mercury; but, they do contain nickel, lead, and trace amounts of arsenic. \nLight bulbs often break when thrown into a dumpster, trash can or compactor, or when they end up in a landfill or incinerator. This causes the release of hazardous materials into the environment and can create serious public and environmental health concerns.\nIt’s also important to remember that recycling allows the reuse of the glass, metals and other materials that make up light bulbs. Virtually all components of light bulbs can be recycled."
     },
     {
-        type: "Ewaste",
+        type: "e-waste",
         description: "Electronic waste or e-waste describes discarded electrical or electronic devices. Used electronics which are destined for refurbishment, reuse, resale, salvage recycling through material recovery, or disposal are also considered e-waste. \nInformal processing of e-waste in developing countries can lead to adverse human health effects and environmental pollution.Electronic scrap components, such as CPUs, contain potentially harmful materials such as lead, cadmium, beryllium, or brominated flame retardants. \nRecycling and disposal of e-waste may involve significant risk to health of workers and their communities.E-waste or electronic waste is created when an electronic product is discarded after the end of its useful life. The rapid expansion of technology and the consumption driven society results in the creation of a very large amount of e-waste in every minute."
     },
     {
@@ -45,9 +45,9 @@ export const Wastagedata = [
 export const Waste3R = {
   batteries: ['Reduce'],
   clothes: ['Reduce', 'Reuse', 'Recycle'],
-  Ewaste: ['Reduce', 'Recycle'],
+  ewaste: ['Reduce', 'Recycle'],
   glass: ['Reduce', 'Reuse', 'Recycle'],
-  LightBlubs: ['Reduce', 'Recycle'],
+  lightblubs: ['Reduce', 'Recycle'],
   metal: ['Reduce' , 'Recycle'],
   organic: ['Reduce', 'Reuse', 'Recycle'],
   paper: ['Reduce', 'Reuse', 'Recycle'],

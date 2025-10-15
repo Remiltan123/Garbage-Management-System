@@ -7,6 +7,7 @@ import {
 } from "../Model/model";
 
 export const predictWaste = async (file: File) => {
+  console.log("file", file)
     try {
         if(!file){
             throw new Error("Please upload an image first!");

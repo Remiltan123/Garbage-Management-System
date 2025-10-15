@@ -1,11 +1,14 @@
 .report-garbage-container {
+  margin: 20px 20px;
   color: white;
+  border-radius: 10px;
   padding: 30px 25px;
-  height: 90vh;
+  height: 95vh;
   box-sizing: border-box;
   overflow-y: auto;
   background: linear-gradient(135deg, #121212 0%, #1a1a1a 100%);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  
 }
 
 .report-garbage-container::-webkit-scrollbar {
@@ -142,7 +145,6 @@
 }
 
 .form-group label {
-  color: #d4af37;
   font-weight: 600;
   font-size: 16px;
 }
@@ -185,11 +187,10 @@
   gap: 15px;
 }
 
-.upload-label {
-  background: linear-gradient(135deg, #d4af37 0%, #f5d142 100%);
+.report-upload-label {
+  background:#478bf7;;
   border: none;
-  color: #000;
-  padding: 14px 20px;
+  padding: 8px 20px;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
@@ -199,12 +200,11 @@
   justify-content: center;
   width: fit-content;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+
 }
 
-.upload-label:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
+.report-upload-label:hover {
+  background-color: #2563EB;
 }
 
 .report-image-preview {
@@ -219,34 +219,29 @@
   height: 200px;
   object-fit: cover;
   border: 2px solid #d4af37;
-  transition: transform 0.3s ease;
+  border-radius: 5px;
 }
 
-.report-image-preview:hover img {
-  transform: scale(1.05);
-}
+
 
 /* Location Button */
 .get-location-btn {
-  background: linear-gradient(135deg, #d4af37 0%, #f5d142 100%);
+  background:  #478bf7;;
   border: none;
-  color: #000;
-  padding: 14px 20px;
+  padding: 10px 20px;
   border-radius: 8px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 800;
   font-size: 14px;
   margin-top: 5px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
 .get-location-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
+
 }
 
 .get-location-btn:disabled {
@@ -302,9 +297,9 @@
 
 /* Submit Button */
 .submit-btn {
-  background: linear-gradient(135deg, #d4af37 0%, #f5d142 100%);
+  background:  #478bf7;
   border: none;
-  color: #000;
+  font-weight: bold;
   padding: 16px 30px;
   border-radius: 10px;
   cursor: pointer;
@@ -315,13 +310,13 @@
   justify-content: center;
   transition: all 0.3s ease;
   grid-column: 1 / -1;
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+  width: 200px;
   font-family: inherit;
+  margin-left: 300px;
 }
 
 .submit-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+   background-color: #2563EB;
 }
 
 .submit-btn:active {

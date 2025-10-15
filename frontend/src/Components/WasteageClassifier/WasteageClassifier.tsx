@@ -6,7 +6,7 @@ import { predictWaste } from '../../utility/api';
 import { Wastagedata, Waste3R } from '../../utility/WastageData';
 import { BinsContainer } from '../BinsContainer/BinsContainer';
 import { SearchAI } from '../Recomand/Recomand';
-import { toast } from 'react-toastify'
+import { toastWarn, toastError, toastSucces } from '../../Model/toast';
 
 type Prediction = {
   waste: string;
@@ -40,7 +40,8 @@ export function WasteageClassifier() {
 
   const getBinClass = (bin: string) => {
     if (prediction?.waste) {
-      const wasteType = prediction?.waste.toLowerCase().replace(/\s/g, '');
+      let wasteType = prediction?.waste.toLowerCase().replace(/\s/g, '');
+      if(wasteType === "e-waste"){ wasteType = "ewaste"}
       const waste3Rs = Waste3R[wasteType as keyof typeof Waste3R];
       return waste3Rs?.includes(bin) ? 'bin bin-highlight' : 'bin';
     }
@@ -60,11 +61,7 @@ export function WasteageClassifier() {
 
   const handleClassify = async () => {
     if (!selectedFile) {
-      toast.warn("Please upload an image first!", {
-        position: "top-right",
-        autoClose: 3000,
-        theme: "dark",
-      });
+      toastWarn("Please upload an image first!")
       return;
     }
 
@@ -89,23 +86,15 @@ export function WasteageClassifier() {
 
       localStorage.setItem('predictionData', JSON.stringify(newPrediction));
       if (selectedImage) {
-        localStorage.setItem('uploadedImage', selectedImage);
+        localStorage.setItem('predictionData', JSON.stringify(newPrediction));
+        localStorage.setItem('uploadedImageName', selectedFile.name)
       }
 
-      toast.success("Prediction completed successfully!", {
-        position: "top-right",
-        autoClose: 3000,
-        theme: "dark",
-      });
+      toastSucces("Prediction completed successfully!")
 
     } catch (error) {
       console.error('Prediction failed:', error);
-      toast.error( "Prediction failed!", {
-        position: "top-right",
-        autoClose: 3000,
-        theme: "dark",
-        className: 'custom-toast-error'
-      });
+      toastError("Prediction failed!")
     }
   };
 
