@@ -240,10 +240,6 @@
   gap: 8px;
 }
 
-.get-location-btn:hover:not(:disabled) {
-
-}
-
 .get-location-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;

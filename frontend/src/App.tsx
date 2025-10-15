@@ -5,7 +5,7 @@ import { ReportGarbage } from "./Components/ReportGarbage/ReportGarbage";
 import { HomePage } from "./pages/HomePage/HomePage";
 import AdminPage from "./pages/AdminPage/AdminPage";
 import CollectorPage from "./pages/CollectorPage/CollectorPage";
- import { ToastContainer, toast } from 'react-toastify'
+ import { ToastContainer} from 'react-toastify'
  import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
