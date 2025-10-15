@@ -6,6 +6,7 @@ import { predictWaste } from '../../utility/api';
 import { Wastagedata, Waste3R } from '../../utility/WastageData';
 import { BinsContainer } from '../BinsContainer/BinsContainer';
 import { SearchAI } from '../Recomand/Recomand';
+import { toast } from 'react-toastify'
 
 type Prediction = {
   waste: string;
@@ -59,20 +60,24 @@ export function WasteageClassifier() {
 
   const handleClassify = async () => {
     if (!selectedFile) {
-      alert('Please upload an image first!');
+      toast.warn("Please upload an image first!", {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "dark",
+      });
       return;
     }
 
     try {
-      const result = await predictWaste(selectedFile);
+      let result = await predictWaste(selectedFile);
       const newPrediction: Prediction = {
-        waste: result.class,
-        confidence: result.confidence,
+        waste: result.data.class,
+        confidence: result.data.confidence,
         description: '',
       };
 
       const foundWastage = Wastagedata.find(
-        (item) => item.type.toLowerCase() === result.class.toLowerCase()
+        (item) => item.type.toLowerCase() === result.data.class.toLowerCase()
       );
 
       const wastageDescription = foundWastage
@@ -86,9 +91,21 @@ export function WasteageClassifier() {
       if (selectedImage) {
         localStorage.setItem('uploadedImage', selectedImage);
       }
+
+      toast.success("Prediction completed successfully!", {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "dark",
+      });
+
     } catch (error) {
       console.error('Prediction failed:', error);
-      alert('Prediction failed.');
+      toast.error( "Prediction failed!", {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "dark",
+        className: 'custom-toast-error'
+      });
     }
   };
 
@@ -129,7 +146,7 @@ export function WasteageClassifier() {
             ) : (<></>)}</span>
           </h2>
           {prediction?.description.split("\n").map((line, index) => (
-            <p key={index} style={{ lineHeight: 1.2}}>{line}</p>
+            <p key={index} style={{ lineHeight: 1.2 }}>{line}</p>
           ))}
         </div>
 

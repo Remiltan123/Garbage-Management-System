@@ -4,22 +4,27 @@ import { WasteageClassifier } from "./Components/WasteageClassifier/WasteageClas
 import { ReportGarbage } from "./Components/ReportGarbage/ReportGarbage";
 import { HomePage } from "./pages/HomePage/HomePage";
 import AdminPage from "./pages/AdminPage/AdminPage";
+ import { ToastContainer, toast } from 'react-toastify'
+ import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/admin" element={<AdminPage />} />
+    <>
+      <ToastContainer />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/admin" element={<AdminPage />} />
 
-        <Route path="/dashboard" element={<DashBoard />}>
-          <Route path="wastage-classifier" element={<WasteageClassifier />} />
-          <Route path="report-garbage" element={<ReportGarbage />} />
-          <Route path="profile" element={<div>Profile content here</div>} />
-          <Route path="settings" element={<div>settings content here</div>} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+          <Route path="/dashboard" element={<DashBoard />}>
+            <Route path="wastage-classifier" element={<WasteageClassifier />} />
+            <Route path="report-garbage" element={<ReportGarbage />} />
+            <Route path="profile" element={<div>Profile content here</div>} />
+            <Route path="settings" element={<div>settings content here</div>} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 

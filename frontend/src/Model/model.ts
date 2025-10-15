@@ -10,6 +10,7 @@ export interface RegisterResponse {
     success : boolean,
     result?: RegisterDetails,
     message?: string
+    data? : string | null
 }
 
 export interface LoginDetails{

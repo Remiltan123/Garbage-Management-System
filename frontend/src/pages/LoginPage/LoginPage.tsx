@@ -3,6 +3,8 @@ import awarenessImage from '../../assets/images/awareness_of_waste_recycling.png
 import { useState, } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { userRegister, userLogin } from '../../utility/api'
+import { toast } from 'react-toastify'
+import '../../css/toasty.css'
 
 
 const LoginPageDetails = [
@@ -41,22 +43,37 @@ export function LoginPage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        let res: any; 
-        
-        try {
-            if (pageState === "SignUp") {
-                res = await userRegister(formData);
-            } else {
-                res = await userLogin(formData);
-            }
 
-            if (res?.success) {
+        try {
+            const res = pageState === "SignUp"
+                ? await userRegister(formData)
+                : await userLogin(formData);
+
+            if (res.success) {
+                toast.success(res.message, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    theme: "dark",
+                    className: "custom-toast-success",
+                });
+
                 navigate('/dashboard/wastage-classifier');
             } else {
-                console.error("Login or registration failed:", res?.message);
+                toast.error(res.message || "Something went wrong!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    theme: "dark",
+                    className: 'custom-toast-error'
+                });
             }
         } catch (error) {
             console.error("Error during authentication:", error);
+            toast.error("An unexpected error occurred!", {
+                position: "top-right",
+                autoClose: 3000,
+                theme: "dark",
+                className: 'custom-toast-error'
+            });
         }
     };
 

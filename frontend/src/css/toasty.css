@@ -1,0 +1,17 @@
+.custom-toast-success {
+  background-color: #1e3b28 !important; 
+  color: #ffffff !important;
+  border-radius: 10px !important;
+  font-weight: 500;
+}
+
+
+.custom-toast-error {
+  background-color: black;
+  color: white !important;
+}
+
+.custom-toast-info {
+  background-color: #0ea5e9 !important;
+  color: white !important;
+}
