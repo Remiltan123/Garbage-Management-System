@@ -4,6 +4,7 @@ import { WasteageClassifier } from "./Components/WasteageClassifier/WasteageClas
 import { ReportGarbage } from "./Components/ReportGarbage/ReportGarbage";
 import { HomePage } from "./pages/HomePage/HomePage";
 import AdminPage from "./pages/AdminPage/AdminPage";
+import CollectorPage from "./pages/CollectorPage/CollectorPage";
  import { ToastContainer, toast } from 'react-toastify'
  import 'react-toastify/dist/ReactToastify.css';
 
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/admin" element={<AdminPage />} />
+        <Route path="/collector" element={<CollectorPage />} />
 
           <Route path="/dashboard" element={<DashBoard />}>
             <Route path="wastage-classifier" element={<WasteageClassifier />} />

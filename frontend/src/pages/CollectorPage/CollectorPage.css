@@ -1,0 +1,33 @@
+/* Collector Page Wrapper - Main Layout */
+.collector-page-wrapper {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(135deg, #121212 0%, #1a1a1a 100%);
+}
+
+.collector-content {
+  flex: 1;
+  margin-left: 250px;
+  width: calc(100vw - 250px);
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: transparent;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .collector-content {
+    margin-left: 200px;
+    width: calc(100vw - 200px);
+  }
+}
+
+@media (max-width: 480px) {
+  .collector-content {
+    margin-left: 70px;
+    width: calc(100vw - 70px);
+  }
+}
