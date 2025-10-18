@@ -5,8 +5,10 @@ import {
   getChatUsers,
   getChatHistory,
   sendMessage,
+  getAllUsers,
 } from "../../utility/api";
 import { FaCheck } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 interface User {
   _id: string;
@@ -14,6 +16,8 @@ interface User {
   email: string;
   isOnline: boolean;
   lastSeen: Date;
+  lastMessageAt?: string;
+  lastMessage?: string;
 }
 
 interface Message {
@@ -26,17 +30,22 @@ interface Message {
 }
 
 const ChatPage = () => {
+  const navigate = useNavigate();
   const [users, setUsers] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [currentUser, setCurrentUser] = useState<any>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     const user = getCurrentUser();
     if (user) {
       setCurrentUser(user);
       fetchUsers(user.id);
+      fetchAllUsers();
     } else {
       // Handle not logged in, but since protected route, shouldn't happen
       console.error("No user found");
@@ -56,8 +65,21 @@ const ChatPage = () => {
   const fetchUsers = async (userId: string) => {
     const data = await getChatUsers(userId);
     if (data.success) {
-      setUsers(data.users);
+      setUsers(data.contacts);
     }
+  };
+
+  const fetchAllUsers = async () => {
+    const data = await getAllUsers();
+    if (data.success) {
+      setAllUsers(data.users);
+    }
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    setShowDropdown(query.trim() !== "");
   };
 
   const fetchMessages = async (userId: string) => {
@@ -88,9 +110,53 @@ const ChatPage = () => {
 
   return (
     <div className="chat-page">
+      <button className="back-button" onClick={() => navigate(-1)}>
+        {"<-"}
+      </button>
       <div className="chat-container">
         <div className="users-list">
           <h3>Users</h3>
+          <div className="search-container">
+            <input
+              type="text"
+              placeholder="Search users by username..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+              className="search-input"
+            />
+            {showDropdown && (
+              <div className="search-dropdown">
+                {allUsers
+                  .filter(
+                    (user) =>
+                      user._id !== currentUser.id &&
+                      user.username
+                        .toLowerCase()
+                        .includes(searchQuery.toLowerCase())
+                  )
+                  .map((user) => (
+                    <div
+                      key={user._id}
+                      className="dropdown-item"
+                      onClick={() => {
+                        setSelectedUser(user);
+                        setSearchQuery("");
+                        setShowDropdown(false);
+                      }}
+                    >
+                      <div className="user-info">
+                        <span className="username">{user.username}</span>
+                        <span
+                          className={`status ${
+                            user.isOnline ? "online" : "offline"
+                          }`}
+                        ></span>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            )}
+          </div>
           <ul>
             {users.map((user) => (
               <li
@@ -102,10 +168,18 @@ const ChatPage = () => {
                   <span className="username">{user.username}</span>
                   <span
                     className={`status ${user.isOnline ? "online" : "offline"}`}
-                  >
-                    {user.isOnline ? "Online" : "Offline"}
-                  </span>
+                  ></span>
                 </div>
+                {user.lastMessage && (
+                  <div className="last-message">
+                    <span className="last-msg-text">{user.lastMessage}</span>
+                    {user.lastMessageAt && (
+                      <span className="last-msg-time">
+                        {new Date(user.lastMessageAt).toLocaleTimeString()}
+                      </span>
+                    )}
+                  </div>
+                )}
               </li>
             ))}
           </ul>
