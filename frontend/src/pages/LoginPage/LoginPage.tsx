@@ -59,9 +59,15 @@ export function LoginPage() {
           className: "custom-toast-success",
         });
 
-        res.data.user.role === "collector"
-          ? navigate("/collector")
-          : navigate("/reporter/wastage-classifier");
+        if (res.data?.user.role === "collector") {
+          navigate("/collector")
+        } else if (res.data?.user.role === "admin") {
+          navigate("/admin")
+        } else {
+          navigate("/reporter/wastage-classifier");
+        }
+
+
       } else {
         toast.error(res.message || "Something went wrong!", {
           position: "top-right",
@@ -139,7 +145,7 @@ export function LoginPage() {
                   key={index}
                   value={
                     formData[
-                      detail.label.toLocaleLowerCase() as keyof typeof formData
+                    detail.label.toLocaleLowerCase() as keyof typeof formData
                     ]
                   }
                   onChange={(e) =>
