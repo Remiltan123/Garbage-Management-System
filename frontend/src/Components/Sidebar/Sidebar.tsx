@@ -3,6 +3,7 @@ import "./Sidebar.css";
 import awarenessImage from "../../assets/images/awareness_of_waste_recycling.png";
 import { FaRecycle, FaSignOutAlt, FaUserAlt, FaTrash } from "react-icons/fa";
 import { toastSucces } from "../../Model/toast";
+import { logout } from "../../utility/api";
 
 export function Sidebar() {
   return (
@@ -36,7 +37,12 @@ export function Sidebar() {
               <FaUserAlt /> <span>Profile</span>
             </NavLink>
           </li>
-          <li onClick={ () => toastSucces("Logout Successfully")}>
+          <li
+            onClick={() => {
+              logout();
+              toastSucces("Logout Successfully");
+            }}
+          >
             <NavLink
               to="/"
               className={({ isActive }) => (isActive ? "active-link" : "")}

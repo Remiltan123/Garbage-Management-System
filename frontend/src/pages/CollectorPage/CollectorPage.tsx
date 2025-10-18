@@ -4,15 +4,17 @@ import { CollectorSidebar } from "../../Components/CollectorSidebar/CollectorSid
 import { CollectorLocations } from "../../Components/CollectorLocations/CollectorLocations";
 import { useNavigate } from "react-router-dom";
 import { toastSucces } from "../../Model/toast";
+import { logout } from "../../utility/api";
 
 const CollectorPage = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("locations");
 
   const handleTabChange = (tab: string) => {
-    if(tab === "Logout"){
-      navigate('/')
-      toastSucces("Logout Successfully")
+    if (tab === "Logout") {
+      logout();
+      navigate("/");
+      toastSucces("Logout Successfully");
     }
     setActiveTab(tab);
   };
