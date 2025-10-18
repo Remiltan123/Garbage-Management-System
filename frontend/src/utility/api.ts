@@ -243,18 +243,3 @@ export const sendMessage = async (
     return { success: false, message: "Error sending message" };
   }
 };
-
-export const markMessagesAsSeen = async (senderId: string, currentUserId: string) => {
-  try {
-    const response = await fetch(`${base_url}/api/chat/seen/${senderId}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ currentUserId }),
-    });
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error marking messages as seen:", error);
-    return { success: false, message: "Error marking messages as seen" };
-  }
-};
