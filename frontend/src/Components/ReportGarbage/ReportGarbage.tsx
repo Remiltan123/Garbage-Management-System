@@ -2,6 +2,7 @@ import "./ReportGarbage.css";
 import { FaSpinner } from "react-icons/fa";
 import { useState } from "react";
 import { toastError, toastSucces, toastWarn } from "../../Model/toast";
+import { createGarbageReport } from "../../utility/api";
 
 type LocationData = {
   latitude: number;
@@ -14,19 +15,11 @@ export function ReportGarbage() {
   const [weight, setWeight] = useState("");
   const [collectionDeadline, setCollectionDeadline] = useState("");
   const [additionalDetails, setAdditionalDetails] = useState("");
-  const [garbageImage, setGarbageImage] = useState<string | null>(null);
+  const [garbageImage, setGarbageImage] = useState<File | null>(null);
   const [location, setLocation] = useState<LocationData | null>(null);
   const [loadingLocation, setLoadingLocation] = useState(false);
   const [locationError, setLocationError] = useState("");
   const [submitting, setSubmitting] = useState(false);
-
-  const toBase64 = (file: File): Promise<string> =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = reject;
-    });
 
   const handleImageUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -34,11 +27,10 @@ export function ReportGarbage() {
     const file = event.target.files?.[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        toastWarn("Image size should be less than 5MB.")
+        toastWarn("Image size should be less than 5MB.");
         return;
       }
-      const base64 = await toBase64(file);
-      setGarbageImage(base64);
+      setGarbageImage(file);
     }
   };
 
@@ -92,7 +84,7 @@ export function ReportGarbage() {
     e.preventDefault();
 
     if (!reporterName.trim() || !weight || !collectionDeadline || !location) {
-      toastError("Please fill in all required fields")
+      toastError("Please fill in all required fields");
       return;
     }
 
@@ -103,32 +95,31 @@ export function ReportGarbage() {
 
     setSubmitting(true);
 
-    // Simulate API call delay
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    const reportData = {
+    const result = await createGarbageReport({
       reporterName: reporterName.trim(),
       weight: parseFloat(weight),
       collectionDeadline,
       additionalDetails: additionalDetails.trim(),
-      garbageImage,
-      location,
-      timestamp: new Date().toISOString(),
-    };
+      latitude: location.latitude,
+      longitude: location.longitude,
+      address: location.address,
+      garbageImage: garbageImage || undefined,
+    });
 
-    console.log("Report Data:", reportData);
-    toastSucces(
-      "Garbage report submitted successfully!"
-    );
+    if (result.success) {
+      toastSucces("Garbage report submitted successfully!");
+      // Reset form
+      setReporterName("");
+      setWeight("");
+      setCollectionDeadline("");
+      setAdditionalDetails("");
+      setGarbageImage(null);
+      setLocation(null);
+      setLocationError("");
+    } else {
+      toastError(result.message);
+    }
 
-    // Reset form
-    setReporterName("");
-    setWeight("");
-    setCollectionDeadline("");
-    setAdditionalDetails("");
-    setGarbageImage(null);
-    setLocation(null);
-    setLocationError("");
     setSubmitting(false);
   };
 
@@ -177,7 +168,10 @@ export function ReportGarbage() {
               </label>
               {garbageImage && (
                 <div className="report-image-preview ">
-                  <img src={garbageImage} alt="Uploaded garbage preview" />
+                  <img
+                    src={URL.createObjectURL(garbageImage)}
+                    alt="Uploaded garbage preview"
+                  />
                 </div>
               )}
             </div>
