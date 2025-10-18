@@ -193,7 +193,7 @@ export function ReportGarbage() {
               required
               aria-required="true"
             />
-            <small style={{ color: "#888", fontSize: "12px" }}>
+            <small style={{ color: "#666", fontSize: "12px" }}>
               Provide an accurate estimate for better scheduling
             </small>
           </div>
@@ -217,7 +217,7 @@ export function ReportGarbage() {
               required
               aria-required="true"
             />
-            <small style={{ color: "#888", fontSize: "12px" }}>
+            <small style={{ color: "#666", fontSize: "12px" }}>
               Select a date at least 24 hours from now
             </small>
           </div>
@@ -286,7 +286,7 @@ export function ReportGarbage() {
             />
             <small
               id="details-help"
-              style={{ color: "#888", fontSize: "12px" }}
+              style={{ color: "#666", fontSize: "12px" }}
             >
               Help us understand the situation better
             </small>

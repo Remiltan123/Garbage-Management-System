@@ -1,76 +1,136 @@
 .Login-page-bg {
-    background-color: rgb(37, 50, 60);
-    height: 390px;
-    width: 300px;
-    border: 1px solid white;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-.awarenessImage-container {
-    height: 80px;
-    width: 300px;
-}
-
-.awarenessImage-container img {
-    height: 80px;
-    width: 300px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  height: 390px;
+  width: 420px;
+  border: none;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
 }
 
 .login-page-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding-top: 20px;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 30px 40px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.95);
+  flex: 1;
+  border-radius: 20px;
 }
-.login-page-input{
-    display: flex;
-    flex-direction: column;
-    gap:5px;
-    margin-right: 20px;
+
+.login-page-input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
 }
+
+.login-page-input label {
+  color: #333;
+  font-weight: 600;
+  font-size: 14px;
+}
+
 .login-page-input input {
-    width: 100%;     
-    padding: 5px 10px;
-    border-radius: 6px;
-    outline: none; 
-    background-color: #E6F2E6; 
-    color: #222121; 
-    font-size: 14px;
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: 25px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  font-size: 14px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.login-page-input input::placeholder {
+  color: #999;
+}
+
+.login-page-input input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  background: white;
 }
 
 .role-radio-group {
-    display: flex;
-    gap: 15px;
-   
+  display: flex;
+  gap: 20px;
+  padding: 10px;
+  background: rgba(102, 126, 234, 0.05);
+  border-radius: 15px;
 }
 
 .role-radio-group label {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.role-radio-group input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #667eea;
 }
 
 .login-page-input select {
-  padding-left:  20px;
+  padding: 12px 16px;
 }
 
-.loin-page-input input::placeholder {
-    color: #999; 
+.login-page-container > div {
+  color: #333;
+  font-size: 14px;
+  margin-top: 5px;
 }
 
 .toggle-link {
-    cursor: pointer;
-    color: rgb(72, 180, 247);
-    transition: color 0.3s ease; 
-}
-.toggle-link:hover {
-    color: blue;
+  cursor: pointer;
+  color: #667eea;
+  transition: all 0.3s ease;
+  font-weight: 600;
 }
 
+.toggle-link:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+.login-page-container button {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.login-page-container button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  background: linear-gradient(45deg, #764ba2, #667eea);
+}
+
+.login-page-container button:active {
+  transform: translateY(0);
+}

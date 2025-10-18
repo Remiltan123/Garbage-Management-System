@@ -1,5 +1,5 @@
 .collector-sidebar {
-  background-color: rgb(37, 50, 60);
+  background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -9,7 +9,7 @@
   position: fixed;
   left: 0;
   top: 0;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 0 15px rgba(0, 0, 0, 0.2);
   overflow-y: auto;
   z-index: 1100;
   box-sizing: border-box;
@@ -20,12 +20,16 @@
 }
 
 .collector-sidebar::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .collector-sidebar::-webkit-scrollbar-thumb {
-  background: #d4af37;
+  background: rgba(255, 255, 255, 0.3);
   border-radius: 3px;
+}
+
+.collector-sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
 }
 
 .collector-sidebar-header {
@@ -34,7 +38,7 @@
   justify-content: space-between;
   padding: 15px 10px;
   margin-bottom: 20px;
-  border-bottom: 2px solid #d4af37;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .collector-header-content {
@@ -45,12 +49,12 @@
 }
 
 .collector-icon {
-  color: #d4af37;
+  color: white;
   font-size: 28px;
 }
 
 .collector-sidebar-header h2 {
-  color: #d4af37;
+  color: white;
   font-size: 22px;
   margin: 0;
   font-weight: 700;
@@ -59,14 +63,15 @@
 
 .collector-sidebar-img {
   margin-bottom: 25px;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
 }
 
 .collector-sidebar-img img {
   width: 100%;
   object-fit: contain;
-  border-radius: 8px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .collector-nav ul {
@@ -82,8 +87,8 @@
 .collector-nav button {
   text-decoration: none;
   color: white;
-  padding: 14px 16px;
-  border-radius: 8px;
+  padding: 12px 16px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -91,7 +96,7 @@
   font-weight: 500;
   transition: all 0.3s ease;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -99,41 +104,16 @@
   text-align: left;
 }
 
-.collector-nav button::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 3px;
-  background: #d4af37;
-  transform: scaleY(0);
-  transition: transform 0.3s ease;
-}
-
-.collector-nav button:hover::before {
-  transform: scaleY(1);
-}
-
 .collector-nav button:hover {
-  background-color: rgb(80, 101, 116);
-  padding-left: 20px;
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: translateX(5px);
 }
 
 .collector-nav button.active-link {
-  background: linear-gradient(
-    135deg,
-    rgba(212, 175, 55, 0.2) 0%,
-    rgba(212, 175, 55, 0.1) 100%
-  );
-  border: 1px solid rgba(212, 175, 55, 0.4);
-  font-weight: 700;
-  color: #d4af37;
-  padding-left: 20px;
-}
-
-.collector-nav button.active-link::before {
-  transform: scaleY(1);
+  background: rgba(255, 255, 255, 0.25);
+  font-weight: 600;
+  color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .nav-icon {
