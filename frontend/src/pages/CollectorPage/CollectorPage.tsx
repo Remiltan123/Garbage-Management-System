@@ -15,6 +15,8 @@ const CollectorPage = () => {
       logout();
       navigate("/");
       toastSucces("Logout Successfully");
+    } else if (tab === "chat") {
+      navigate("/chat");
     }
     setActiveTab(tab);
   };

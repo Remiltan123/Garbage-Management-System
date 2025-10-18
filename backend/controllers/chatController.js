@@ -1,6 +1,33 @@
 import Chat from "../models/Chat.js";
 import User from "../models/User.js";
 
+// Add this function to chatController.js
+export const sendMessage = async (req, res) => {
+  try {
+    const { sender, receiver, message } = req.body;
+
+    const newMessage = new Chat({
+      sender,
+      receiver,
+      message,
+    });
+
+    await newMessage.save();
+
+    res.status(201).json({
+      success: true,
+      message: "Message sent successfully",
+      data: newMessage,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error sending message",
+      error: error.message,
+    });
+  }
+};
+
 // Get chat history between two users
 export const getChatHistory = async (req, res) => {
   try {

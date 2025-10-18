@@ -1,5 +1,5 @@
 import "./AdminSidebar.css";
-import { FaFileAlt, FaUsers, FaUserShield } from "react-icons/fa";
+import { FaFileAlt, FaUsers, FaUserShield, FaComments } from "react-icons/fa";
 import awarenessImage from "../../assets/images/awareness_of_waste_recycling.png";
 
 interface AdminSidebarProps {
@@ -18,6 +18,11 @@ export function AdminSidebar({ activeTab, onTabChange }: AdminSidebarProps) {
       id: "collectors",
       label: "Collectors",
       icon: <FaUsers />,
+    },
+    {
+      id: "chat",
+      label: "Chat",
+      icon: <FaComments />,
     },
   ];
 

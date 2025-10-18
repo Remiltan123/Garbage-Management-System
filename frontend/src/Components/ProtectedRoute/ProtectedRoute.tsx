@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { getStoredUser } from "../../utility/api";
+import { getCurrentUser } from "../../utility/api";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -11,7 +11,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
   allowedRoles,
 }) => {
-  const user = getStoredUser();
+  const user = getCurrentUser();
 
   if (!user) {
     // Not logged in, redirect to home (login page)

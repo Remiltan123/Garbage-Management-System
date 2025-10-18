@@ -1,7 +1,13 @@
 import { NavLink } from "react-router-dom";
 import "./Sidebar.css";
 import awarenessImage from "../../assets/images/awareness_of_waste_recycling.png";
-import { FaRecycle, FaSignOutAlt, FaUserAlt, FaTrash } from "react-icons/fa";
+import {
+  FaRecycle,
+  FaSignOutAlt,
+  FaUserAlt,
+  FaTrash,
+  FaComments,
+} from "react-icons/fa";
 import { toastSucces } from "../../Model/toast";
 import { logout } from "../../utility/api";
 
@@ -35,6 +41,14 @@ export function Sidebar() {
               className={({ isActive }) => (isActive ? "active-link" : "")}
             >
               <FaUserAlt /> <span>Profile</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/chat"
+              className={({ isActive }) => (isActive ? "active-link" : "")}
+            >
+              <FaComments /> <span>Chat</span>
             </NavLink>
           </li>
           <li

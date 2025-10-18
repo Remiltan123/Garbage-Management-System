@@ -1,5 +1,10 @@
 import "./CollectorSidebar.css";
-import { FaMapMarkerAlt, FaUser, FaSignOutAlt } from "react-icons/fa";
+import {
+  FaMapMarkerAlt,
+  FaUser,
+  FaSignOutAlt,
+  FaComments,
+} from "react-icons/fa";
 import awarenessImage from "../../assets/images/awareness_of_waste_recycling.png";
 
 interface CollectorSidebarProps {
@@ -18,10 +23,15 @@ export function CollectorSidebar({
       icon: <FaMapMarkerAlt />,
     },
     {
+      id: "chat",
+      label: "Chat",
+      icon: <FaComments />,
+    },
+    {
       id: "Logout",
       label: "Logout",
-      icon: <FaSignOutAlt/>,
-    }
+      icon: <FaSignOutAlt />,
+    },
   ];
 
   return (

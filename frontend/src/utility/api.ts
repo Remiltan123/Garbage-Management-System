@@ -180,7 +180,7 @@ export const createGarbageReport = async (data: CreateGarbageReportData) => {
 };
 
 // Utility functions for localStorage
-export const getStoredUser = () => {
+export const getCurrentUser = () => {
   const user = localStorage.getItem("user");
   return user ? JSON.parse(user) : null;
 };
@@ -192,4 +192,69 @@ export const getStoredToken = () => {
 export const logout = () => {
   localStorage.removeItem("user");
   localStorage.removeItem("token");
+};
+
+// Chat APIs
+export const getChatUsers = async (currentUserId: string) => {
+  try {
+    const response = await fetch(`${base_url}/api/chat/users`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ currentUserId }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching chat users:", error);
+    return { success: false, message: "Error fetching users" };
+  }
+};
+
+export const getChatHistory = async (userId: string, currentUserId: string) => {
+  try {
+    const response = await fetch(`${base_url}/api/chat/history/${userId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ currentUserId }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching chat history:", error);
+    return { success: false, message: "Error fetching history" };
+  }
+};
+
+export const sendMessage = async (
+  sender: string,
+  receiver: string,
+  message: string
+) => {
+  try {
+    const response = await fetch(`${base_url}/api/chat/send`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sender, receiver, message }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error sending message:", error);
+    return { success: false, message: "Error sending message" };
+  }
+};
+
+export const markMessagesAsSeen = async (senderId: string, currentUserId: string) => {
+  try {
+    const response = await fetch(`${base_url}/api/chat/seen/${senderId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ currentUserId }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error marking messages as seen:", error);
+    return { success: false, message: "Error marking messages as seen" };
+  }
 };

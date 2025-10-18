@@ -4,9 +4,13 @@ import {
   getChatUsers,
   markMessagesAsSeen,
   getUnreadCount,
+  sendMessage,
 } from "../controllers/chatController.js";
 
 const router = express.Router();
+
+// Add this line to the router
+router.post("/send", sendMessage);
 
 // Get all users available for chat (POST with currentUserId in body)
 router.post("/users", getChatUsers);

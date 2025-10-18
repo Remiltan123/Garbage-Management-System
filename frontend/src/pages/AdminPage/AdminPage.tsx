@@ -3,12 +3,18 @@ import "./AdminPage.css";
 import { AdminSidebar } from "../../Components/AdminSidebar/AdminSidebar";
 import { AdminReports } from "../../Components/AdminReports/AdminReports";
 import { AdminCollectors } from "../../Components/AdminCollectors/AdminCollectors";
+import { useNavigate } from "react-router-dom";
 
 export function AdminPage() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("reports");
 
   const handleTabChange = (tab: string) => {
-    setActiveTab(tab);
+    if (tab === "chat") {
+      navigate("/chat");
+    } else {
+      setActiveTab(tab);
+    }
   };
 
   return (

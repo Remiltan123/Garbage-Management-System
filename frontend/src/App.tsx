@@ -5,6 +5,7 @@ import { ReportGarbage } from "./Components/ReportGarbage/ReportGarbage";
 import { HomePage } from "./pages/HomePage/HomePage";
 import AdminPage from "./pages/AdminPage/AdminPage";
 import CollectorPage from "./pages/CollectorPage/CollectorPage";
+import ChatPage from "./pages/ChatPage/ChatPage";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -46,6 +47,14 @@ function App() {
             <Route path="profile" element={<div>Profile content here</div>} />
             <Route path="settings" element={<div>settings content here</div>} />
           </Route>
+          <Route
+            path="/chat"
+            element={
+              <ProtectedRoute allowedRoles={["reporter", "collector", "admin"]}>
+                <ChatPage />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </>
