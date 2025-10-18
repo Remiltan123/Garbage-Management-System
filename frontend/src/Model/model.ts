@@ -6,11 +6,30 @@ export interface RegisterDetails {
   role: string;
 }
 
+export interface User {
+  id: string;
+  username: string;
+  email: string;
+  contactNumber: string;
+  role: string;
+}
+
+export interface AuthData {
+  user: User;
+  token: string;
+}
+
 export interface RegisterResponse {
-    success : boolean,
-    result?: RegisterDetails,
-    message?: string
-    data? : string | null
+  success: boolean;
+  message?: string;
+  data?: AuthData | null;
+}
+
+export interface LoginResponse {
+  success: boolean;
+  message?: string;
+  data?: AuthData;
+  token?: string;
 }
 
 export interface LoginDetails {

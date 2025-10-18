@@ -3,6 +3,7 @@ import {
   RegisterDetails,
   RegisterResponse,
   LoginDetails,
+  LoginResponse,
   GarbageReportsResponse,
 } from "../Model/model";
 
@@ -65,6 +66,12 @@ export const userRegister = async (
       throw new Error(result.message || "Registration failed!");
     }
 
+    // Store user details and token in localStorage
+    if (result.data) {
+      localStorage.setItem("token", result.data.token);
+      localStorage.setItem("user", JSON.stringify(result.data.user));
+    }
+
     return {
       success: true,
       message: result.message || "Registration successful!",
@@ -76,7 +83,7 @@ export const userRegister = async (
   }
 };
 
-export const userLogin = async (data: LoginDetails) => {
+export const userLogin = async (data: LoginDetails): Promise<LoginResponse> => {
   try {
     const res = await fetch(`${base_url}/api/auth/login`, {
       method: "POST",
@@ -88,6 +95,12 @@ export const userLogin = async (data: LoginDetails) => {
 
     if (!res.ok || !result.success) {
       throw new Error(result.message || "Login failed!");
+    }
+
+    // Store user details and token in localStorage
+    if (result.data) {
+      localStorage.setItem("token", result.data.token);
+      localStorage.setItem("user", JSON.stringify(result.data.user));
     }
 
     return {
@@ -164,4 +177,19 @@ export const createGarbageReport = async (data: CreateGarbageReportData) => {
       message: error.message || "Failed to submit garbage report",
     };
   }
+};
+
+// Utility functions for localStorage
+export const getStoredUser = () => {
+  const user = localStorage.getItem("user");
+  return user ? JSON.parse(user) : null;
+};
+
+export const getStoredToken = () => {
+  return localStorage.getItem("token");
+};
+
+export const logout = () => {
+  localStorage.removeItem("user");
+  localStorage.removeItem("token");
 };

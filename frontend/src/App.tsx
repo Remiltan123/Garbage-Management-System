@@ -5,8 +5,9 @@ import { ReportGarbage } from "./Components/ReportGarbage/ReportGarbage";
 import { HomePage } from "./pages/HomePage/HomePage";
 import AdminPage from "./pages/AdminPage/AdminPage";
 import CollectorPage from "./pages/CollectorPage/CollectorPage";
- import { ToastContainer} from 'react-toastify'
- import 'react-toastify/dist/ReactToastify.css';
+import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -15,10 +16,31 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/admin" element={<AdminPage />} />
-          <Route path="/collector" element={<CollectorPage />} />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/collector"
+            element={
+              <ProtectedRoute allowedRoles={["collector"]}>
+                <CollectorPage />
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="/dashboard" element={<DashBoard />}>
+          <Route
+            path="/reporter"
+            element={
+              <ProtectedRoute allowedRoles={["reporter"]}>
+                <DashBoard />
+              </ProtectedRoute>
+            }
+          >
             <Route path="wastage-classifier" element={<WasteageClassifier />} />
             <Route path="report-garbage" element={<ReportGarbage />} />
             <Route path="profile" element={<div>Profile content here</div>} />
