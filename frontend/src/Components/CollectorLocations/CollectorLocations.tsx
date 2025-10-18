@@ -11,9 +11,9 @@ delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })
   ._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
   iconUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
   shadowUrl:
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 });
@@ -22,11 +22,14 @@ export function CollectorLocations() {
   const [reports, setReports] = useState<GarbageReport[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [userPosition, setUserPosition] = useState<[number, number] | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const collectorId = "68ef765253e2a08a96e88aa7"; 
+        const collectorId = "68ef765253e2a08a96e88aa7";
         const response = await getCollectorGarbageReports(collectorId);
         if (response.success) {
           setReports(response.data);
@@ -42,6 +45,28 @@ export function CollectorLocations() {
     };
 
     fetchReports();
+  }, []);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      const watchId = navigator.geolocation.watchPosition(
+        (position) => {
+          setUserPosition([
+            position.coords.latitude,
+            position.coords.longitude,
+          ]);
+        },
+        (error) => {
+          console.error("Geolocation error:", error);
+        },
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+      );
+      return () => {
+        navigator.geolocation.clearWatch(watchId);
+      };
+    } else {
+      console.log("Geolocation not supported");
+    }
   }, []);
 
   if (loading) {
@@ -61,6 +86,18 @@ export function CollectorLocations() {
     reports.length > 0
       ? [reports[0].location.latitude, reports[0].location.longitude]
       : [6.9271, 79.8612]; // Colombo coordinates as fallback
+
+  // Custom icon for user location
+  const userIcon = new L.Icon({
+    iconUrl:
+      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
+    shadowUrl:
+      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  });
 
   return (
     <div className="collector-locations">
@@ -106,6 +143,11 @@ export function CollectorLocations() {
               </Popup>
             </Marker>
           ))}
+          {userPosition && (
+            <Marker position={userPosition} icon={userIcon}>
+              <Popup>You are here</Popup>
+            </Marker>
+          )}
         </MapContainer>
       </div>
     </div>
