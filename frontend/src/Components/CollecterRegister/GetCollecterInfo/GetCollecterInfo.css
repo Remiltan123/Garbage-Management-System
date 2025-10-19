@@ -1,0 +1,81 @@
+.collector-form-container {
+    background-color: #f9faf9; /* light, clean background */
+    padding: 10px 25px;
+    border-radius: 12px;
+    max-width: 450px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.collector-form-container h2 {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    color: #1f2937; /* dark gray text */
+}
+
+.collector-form-input {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.collector-form-input label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #4b5563; /* medium gray for label */
+}
+
+.collector-form-input input,
+.collector-form-input select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db; /* light gray border */
+    background-color: #ffffff; /* remove colored background */
+    font-size: 14px;
+    color: #111827;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.collector-form-input input:focus,
+.collector-form-input select:focus {
+    border-color: #3b82f6; /* blue border on focus */
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.waste-type-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.waste-type-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: #374151;
+}
+
+.submit-btn {
+    background-color: rgb(102, 102, 245); /* green professional */
+    color: white;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    font-size: 16px;
+    margin-left: 120px;
+}
+
+.submit-btn:hover {
+    background-color: #059669;
+}

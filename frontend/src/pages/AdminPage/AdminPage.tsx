@@ -3,6 +3,7 @@ import "./AdminPage.css";
 import { AdminSidebar } from "../../Components/AdminSidebar/AdminSidebar";
 import { AdminReports } from "../../Components/AdminReports/AdminReports";
 import { AdminCollectors } from "../../Components/AdminCollectors/AdminCollectors";
+import {CollectorRegister}  from "../../Components/CollecterRegister/CollecterRegister";
 import { useNavigate } from "react-router-dom";
 
 export function AdminPage() {
@@ -23,6 +24,7 @@ export function AdminPage() {
       <div className="admin-content">
         {activeTab === "reports" && <AdminReports />}
         {activeTab === "collectors" && <AdminCollectors />}
+        {activeTab === "Register"  && <CollectorRegister/>}
       </div>
     </div>
   );

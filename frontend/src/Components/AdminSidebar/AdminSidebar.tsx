@@ -1,6 +1,7 @@
 import "./AdminSidebar.css";
 import { FaFileAlt, FaUsers, FaUserShield, FaComments } from "react-icons/fa";
 import awarenessImage from "../../assets/images/awareness_of_waste_recycling.png";
+import { GiArchiveRegister } from "react-icons/gi";
 
 interface AdminSidebarProps {
   activeTab: string;
@@ -23,6 +24,11 @@ export function AdminSidebar({ activeTab, onTabChange }: AdminSidebarProps) {
       id: "chat",
       label: "Chat",
       icon: <FaComments />,
+    },
+    {
+      id: "Register",
+      label: "Register",
+      icon: < GiArchiveRegister />,
     },
   ];
 
