@@ -1,14 +1,13 @@
 .report-garbage-container {
-  margin: 20px 20px;
+  margin: 0;
   color: white;
-  border-radius: 10px;
+  border-radius: 0;
   padding: 30px 25px;
-  height: 95vh;
+  height: 100vh;
   box-sizing: border-box;
   overflow-y: auto;
-  background: linear-gradient(135deg, #121212 0%, #1a1a1a 100%);
+  background: transparent;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  
 }
 
 .report-garbage-container::-webkit-scrollbar {
@@ -16,16 +15,16 @@
 }
 
 .report-garbage-container::-webkit-scrollbar-track {
-  background: #1a1a1a;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .report-garbage-container::-webkit-scrollbar-thumb {
-  background: #d4af37;
+  background: rgba(255, 255, 255, 0.3);
   border-radius: 4px;
 }
 
 .report-garbage-container::-webkit-scrollbar-thumb:hover {
-  background: #f5d142;
+  background: rgba(255, 255, 255, 0.5);
 }
 
 /* Header */
@@ -35,7 +34,7 @@
   gap: 15px;
   margin-bottom: 30px;
   padding-bottom: 15px;
-  border-bottom: 2px solid #d4af37;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
   animation: fadeInDown 0.6s ease-out;
 }
 
@@ -51,7 +50,7 @@
 }
 
 .report-header-icon {
-  color: #d4af37;
+  color: white;
   font-size: 36px;
   animation: pulse 2s infinite;
 }
@@ -67,7 +66,7 @@
 }
 
 .report-header h2 {
-  color: #d4af37;
+  color: white;
   margin: 0;
   font-size: 30px;
   letter-spacing: 0.5px;
@@ -80,15 +79,15 @@
 }
 
 .report-form {
-  background: rgba(28, 28, 28, 0.8);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
-  border: 2px solid #d4af37;
+  border: none;
   border-radius: 16px;
   padding: 40px 35px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 30px;
-  box-shadow: 0 8px 32px rgba(212, 175, 55, 0.1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
   animation: fadeInUp 0.6s ease-out 0.2s both;
 }
 
@@ -147,6 +146,7 @@
 .form-group label {
   font-weight: 600;
   font-size: 16px;
+  color: #333;
 }
 
 /* Inputs & Textareas */
@@ -155,10 +155,10 @@
 .form-group select {
   width: 100%;
   padding: 14px 16px;
-  background-color: #2a2a2a;
-  border: 1px solid #555;
+  background-color: white;
+  border: 2px solid rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  color: white;
+  color: #333;
   font-size: 14px;
   transition: all 0.3s ease;
   box-sizing: border-box;
@@ -168,9 +168,9 @@
 .form-group textarea:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #d4af37;
-  box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
-  background-color: #333;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  background-color: white;
 }
 
 .form-group textarea {
@@ -188,10 +188,10 @@
 }
 
 .report-upload-label {
-  background:#478bf7;;
+  background: linear-gradient(45deg, #667eea, #764ba2);
   border: none;
-  padding: 8px 20px;
-  border-radius: 8px;
+  padding: 12px 24px;
+  border-radius: 25px;
   cursor: pointer;
   font-weight: 600;
   font-size: 14px;
@@ -200,11 +200,13 @@
   justify-content: center;
   width: fit-content;
   transition: all 0.3s ease;
-
+  color: white;
+  box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
 }
 
 .report-upload-label:hover {
-  background-color: #2563EB;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
 .report-image-preview {
@@ -218,26 +220,32 @@
   max-width: 320px;
   height: 200px;
   object-fit: cover;
-  border: 2px solid #d4af37;
-  border-radius: 5px;
+  border: 2px solid #667eea;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
-
-
 
 /* Location Button */
 .get-location-btn {
-  background:  #478bf7;;
+  background: linear-gradient(45deg, #667eea, #764ba2);
   border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
+  padding: 12px 24px;
+  border-radius: 25px;
   cursor: pointer;
-  font-weight: 800;
+  font-weight: 600;
   font-size: 14px;
   margin-top: 5px;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   gap: 8px;
+  color: white;
+  box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+}
+
+.get-location-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
 .get-location-btn:disabled {
@@ -251,20 +259,21 @@
 .location-display {
   margin-top: 12px;
   padding: 16px 20px;
-  background: linear-gradient(135deg, #2a2a2a 0%, #333 100%);
-  border: 1px solid #555;
+  background: rgba(102, 126, 234, 0.05);
+  border: 2px solid rgba(102, 126, 234, 0.2);
   border-radius: 8px;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .location-display p {
   margin: 8px 0;
   font-size: 14px;
-  color: #ccc;
+  color: #333;
 }
 
 .location-display strong {
-  color: #d4af37;
+  color: #667eea;
+  font-weight: 600;
 }
 
 .location-error {
@@ -293,11 +302,11 @@
 
 /* Submit Button */
 .submit-btn {
-  background:  #478bf7;
+  background: linear-gradient(45deg, #667eea, #764ba2);
   border: none;
   font-weight: bold;
   padding: 16px 30px;
-  border-radius: 10px;
+  border-radius: 25px;
   cursor: pointer;
   font-weight: bold;
   font-size: 16px;
@@ -308,11 +317,14 @@
   grid-column: 1 / -1;
   width: 200px;
   font-family: inherit;
-  margin-left: 300px;
+  margin: 0 auto;
+  color: white;
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
 }
 
 .submit-btn:hover {
-   background-color: #2563EB;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
 }
 
 .submit-btn:active {
@@ -321,17 +333,17 @@
 
 /* Info Box */
 .info-box {
-  background: rgba(28, 28, 28, 0.8);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
-  border: 2px solid #d4af37;
-  border-radius: 12px;
+  border: none;
+  border-radius: 16px;
   padding: 30px;
   animation: fadeInUp 0.6s ease-out 0.8s both;
-  box-shadow: 0 8px 32px rgba(212, 175, 55, 0.1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
 
 .info-box h3 {
-  color: #d4af37;
+  color: #667eea;
   font-size: 22px;
   margin-bottom: 20px;
   font-weight: 700;
@@ -347,25 +359,26 @@
 }
 
 .info-box li {
-  background: linear-gradient(135deg, #2a2a2a 0%, #333 100%);
+  background: rgba(102, 126, 234, 0.05);
   border-radius: 8px;
   padding: 14px 16px;
-  color: #ccc;
+  color: #333;
   font-size: 14px;
   line-height: 1.6;
   position: relative;
   transition: all 0.3s ease;
-  border-left: 4px solid #d4af37;
+  border-left: 4px solid #667eea;
 }
 
 .info-box li:hover {
   transform: translateX(5px);
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+  background: rgba(102, 126, 234, 0.1);
 }
 
 .info-box li::before {
   content: "✓ ";
-  color: #d4af37;
+  color: #667eea;
   font-weight: bold;
   font-size: 16px;
   margin-right: 8px;

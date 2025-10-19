@@ -197,7 +197,7 @@ export const logout = () => {
 // Chat APIs
 export const getChatUsers = async (currentUserId: string) => {
   try {
-    const response = await fetch(`${base_url}/api/chat/users`, {
+    const response = await fetch(`${base_url}/api/chat/contacts`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ currentUserId }),
@@ -205,7 +205,20 @@ export const getChatUsers = async (currentUserId: string) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Error fetching chat users:", error);
+    console.error("Error fetching chat contacts:", error);
+    return { success: false, message: "Error fetching contacts" };
+  }
+};
+
+export const getAllUsers = async () => {
+  try {
+    const response = await fetch(`${base_url}/api/chat/users`, {
+      method: "GET",
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching all users:", error);
     return { success: false, message: "Error fetching users" };
   }
 };

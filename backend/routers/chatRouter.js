@@ -5,6 +5,7 @@ import {
   markMessagesAsSeen,
   getUnreadCount,
   sendMessage,
+  getChatContacts,
 } from "../controllers/chatController.js";
 
 const router = express.Router();
@@ -23,5 +24,8 @@ router.post("/seen/:senderId", markMessagesAsSeen);
 
 // Get unread message count (POST with currentUserId in body)
 router.post("/unread-count", getUnreadCount);
+
+// Get chat contacts (users the current user has chatted with, ordered by last conversation)
+router.post("/contacts", getChatContacts);
 
 export default router;

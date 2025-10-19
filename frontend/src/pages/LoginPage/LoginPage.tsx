@@ -1,5 +1,4 @@
 import "./LoginPage.css";
-import awarenessImage from "../../assets/images/awareness_of_waste_recycling.png";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { userRegister, userLogin } from "../../utility/api";
@@ -60,14 +59,12 @@ export function LoginPage() {
         });
 
         if (res.data?.user.role === "collector") {
-          navigate("/collector")
+          navigate("/collector");
         } else if (res.data?.user.role === "admin") {
-          navigate("/admin")
+          navigate("/admin");
         } else {
           navigate("/reporter/wastage-classifier");
         }
-
-
       } else {
         toast.error(res.message || "Something went wrong!", {
           position: "top-right",
@@ -90,11 +87,8 @@ export function LoginPage() {
   return (
     <div
       className="Login-page-bg"
-      style={{ height: pageState === "SignUp" ? "520px" : "360px" }}
+      style={{ height: pageState === "SignUp" ? "580px" : "440px" }}
     >
-      <div className="awarenessImage-container">
-        <img src={awarenessImage} alt="awarenessImage" />
-      </div>
       <form className="login-page-container" onSubmit={handleSubmit}>
         <div className="login-page-input">
           {fieldsToShow.map((detail, index) => (
@@ -145,7 +139,7 @@ export function LoginPage() {
                   key={index}
                   value={
                     formData[
-                    detail.label.toLocaleLowerCase() as keyof typeof formData
+                      detail.label.toLocaleLowerCase() as keyof typeof formData
                     ]
                   }
                   onChange={(e) =>

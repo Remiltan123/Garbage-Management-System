@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Chat from "../models/Chat.js";
 import User from "../models/User.js";
 
@@ -121,6 +122,75 @@ export const getUnreadCount = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Error fetching unread count",
+      error: error.message,
+    });
+  }
+};
+
+// Get users the current user has chatted with, ordered by last conversation
+export const getChatContacts = async (req, res) => {
+  try {
+    const { currentUserId } = req.body;
+
+    // Convert currentUserId to ObjectId for proper comparison
+    const userId = new mongoose.Types.ObjectId(currentUserId);
+
+    // Find all chats where current user is involved
+    const chats = await Chat.find({
+      $or: [{ sender: userId }, { receiver: userId }],
+    }).sort({ createdAt: -1 });
+
+    // Get unique user IDs that the current user has chatted with
+    const contactIds = new Set();
+    chats.forEach((chat) => {
+      if (chat.sender.toString() === currentUserId) {
+        contactIds.add(chat.receiver.toString());
+      } else {
+        contactIds.add(chat.sender.toString());
+      }
+    });
+
+    // Get user details for contacts
+    const users = await User.find({
+      _id: { $in: Array.from(contactIds) },
+    }).select("username email isOnline lastSeen");
+
+    // For each contact, find the last message and timestamp
+    const contactsWithDetails = await Promise.all(
+      users.map(async (user) => {
+        const lastMessage = await Chat.findOne({
+          $or: [
+            { sender: userId, receiver: user._id },
+            { sender: user._id, receiver: userId },
+          ],
+        })
+          .sort({ createdAt: -1 })
+          .select("message createdAt");
+
+        return {
+          ...user.toObject(),
+          lastMessageAt: lastMessage?.createdAt || null,
+          lastMessage: lastMessage?.message || null,
+        };
+      })
+    );
+
+    // Sort by last message timestamp (most recent first)
+    contactsWithDetails.sort((a, b) => {
+      if (!a.lastMessageAt && !b.lastMessageAt) return 0;
+      if (!a.lastMessageAt) return 1;
+      if (!b.lastMessageAt) return -1;
+      return new Date(b.lastMessageAt) - new Date(a.lastMessageAt);
+    });
+
+    res.status(200).json({
+      success: true,
+      contacts: contactsWithDetails,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error fetching chat contacts",
       error: error.message,
     });
   }

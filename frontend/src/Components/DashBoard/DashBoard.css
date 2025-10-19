@@ -1,17 +1,17 @@
 .dash-board {
-    display: flex;
-    width: 100vw;
-    height: 100vh;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .dash-board-action {
-    display: flex;
-
+  display: flex;
 }
 .dash-board :first-child {
-    flex: 0 0 15%;
+  flex: 0 0 15%;
 }
 
 .dash-board :last-child {
-    flex: 1;
+  flex: 1;
 }
