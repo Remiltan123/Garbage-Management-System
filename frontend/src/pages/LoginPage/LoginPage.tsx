@@ -59,6 +59,7 @@ export function LoginPage() {
         });
 
         if (res.data?.user.role === "collector") {
+          localStorage.setItem("collecter_id", res.data?.user.id);
           navigate("/collector");
         } else if (res.data?.user.role === "admin") {
           navigate("/admin");

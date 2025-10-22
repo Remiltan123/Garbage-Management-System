@@ -182,51 +182,9 @@ io.on("connection", (socket) => {
 
 
 
-const API_KEY = "dXrL4HMBC13Lv7qfYQ9TluYqAKnQwUomJMDhyTkV0NEreG44VPYNO1pn17OVCs0F";
 
-// Example collectors (you can later store these in MongoDB)
-const collectors = [
-  {
-    id: "C001",
-    name: "Collector A",
-    start: { lat: 6.843, lon: 79.865 },
-    end: { lat: 6.921, lon: 79.857 },
-  },
-  {
-    id: "C002",
-    name: "Collector B",
-    start: { lat: 6.835, lon: 79.845 },
-    end: { lat: 6.905, lon: 79.865 },
-  },
-  {
-    id: "C003",
-    name: "Collector C",
-    start: { lat: 6.830, lon: 79.870 },
-    end: { lat: 6.920, lon: 79.880 },
-  },
-];
 
-// Utility function to call DistanceMatrix API
-async function getDrivingDistance(origin, destination) {
-  const url = `https://api.distancematrix.ai/maps/api/distancematrix/json?origins=${origin.lat},${origin.lon}&destinations=${destination.lat},${destination.lon}&key=${API_KEY}`;
 
-  try {
-    const res = await axios.get(url);
-
-    // Log full API response for debugging
-    console.log("Full DistanceMatrix response:", res.data);
-
-    const element = res.data.rows[0].elements[0];
-
-    if (element.status !== "OK") return { distance: Infinity, element };
-
-    // Return distance and element so you can inspect
-    return { distance: element.distance.value, element };
-  } catch (err) {
-    console.error("Error calling Distance Matrix API:", err.message);
-    return { distance: Infinity, element: null };
-  }
-}
 app.post("/assign", async (req, res) => {
   const { lat, lon } = req.body;
 
@@ -241,9 +199,8 @@ app.post("/assign", async (req, res) => {
     const toStart = await getDrivingDistance({ lat, lon }, collector.start);
     const toEnd = await getDrivingDistance({ lat, lon }, collector.end);
 
-    // Print full Distance Matrix element for inspection
-    console.log(`Distance to collector ${collector.name} start:`, toStart.element);
-    console.log(`Distance to collector ${collector.name} end:`, toEnd.element);
+   
+
 
     const shortest = Math.min(toStart.distance, toEnd.distance);
 

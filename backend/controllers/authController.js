@@ -1,6 +1,8 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import Collector from "../models/Collector.js";
+
 
 export const register = async (req, res) => {
 
@@ -66,9 +68,12 @@ export const register = async (req, res) => {
   }
 };
 
+
+
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+
     if (!email || !password) {
       return res.status(400).json({
         success: false,
@@ -76,43 +81,55 @@ export const login = async (req, res) => {
       });
     }
 
-    const user = await User.findOne({ email });
+    let user = await User.findOne({ email });
+    let collector = null;
+
     if (!user) {
+      collector = await Collector.findOne({ email });
+    }
+
+    if (!user && !collector) {
       return res.status(401).json({
         success: false,
-        message: "Invalid credentials",
+        message: "Invalid credentials ",
       });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
 
+    const account = user || collector;
+    const role = user ? "reporter" : "collector";
+
+
+    const isPasswordValid = await bcrypt.compare(password, account.password);
     if (!isPasswordValid) {
       return res.status(401).json({
         success: false,
-        message: "Invalid credentials",
+        message: "Invalid credentials - wrong password",
       });
     }
 
+
     const token = jwt.sign(
-      { id: user._id, username: user.username },
+      { id: account._id, role, email: account.email },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
 
+
     res.status(200).json({
       success: true,
-      message: "Login successful",
+      message: `${role === "collector" ? "Collector" : "User"} login successful`,
       data: {
         user: {
-          id: user._id,
-          username: user.username,
-          email: user.email,
-          contactNumber: user.contactnumber,
-          role: user.role,
+          id: account._id,
+          username: account.username || account.name,
+          email: account.email,
+          role,
         },
         token,
       },
     });
+
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({
@@ -122,3 +139,49 @@ export const login = async (req, res) => {
     });
   }
 };
+
+
+
+export const registerCollector = async (req, res) => {
+  try {
+    const { name, email, phone, start, end, area, assignedBins, routePolyline, role, password } = req.body;
+
+    console.log("detiolas ===>", name, email, phone, start, end, area, assignedBins, routePolyline, role, password)
+
+    if (!name || !email || !start || !end || !assignedBins || !password) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    const existingCollector = await Collector.findOne({ email });
+    if (existingCollector) {
+      return res.status(400).json({ error: "Collector with this email already exists" });
+    }
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    const newCollector = new Collector({
+      name,
+      email,
+      password: hashedPassword,
+      phone,
+      start,
+      end,
+      area,
+      assignedBins,
+      routePolyline,
+      role: role || "collector",
+    });
+
+    await newCollector.save();
+
+    res.status(201).json({
+      message: "Collector registered successfully",
+      collector: newCollector,
+    });
+  } catch (error) {
+    console.error("Error registering collector:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+

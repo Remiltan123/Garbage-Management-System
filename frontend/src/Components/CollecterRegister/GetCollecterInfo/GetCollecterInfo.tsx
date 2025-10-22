@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import './GetCollecterInfo.css'
+import axios from "axios";
 
 interface Props {
     startLocation: [number, number];
     endLocation: [number, number];
+    
 }
 
 export const CollectorDetails: React.FC<Props> = ({ startLocation, endLocation }) => {
@@ -30,10 +32,42 @@ export const CollectorDetails: React.FC<Props> = ({ startLocation, endLocation }
         });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log("Collector data:", { ...formData, startLocation, endLocation });
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+   
+    const collectorData = {
+        name: formData.username,
+        email: formData.email,
+        password: formData.password,
+        phone: formData.phone,
+        start: { lat: startLocation[0], lon: startLocation[1] },
+        end: { lat: endLocation[0], lon: endLocation[1] },
+        assignedBins:
+        formData.collectionType === "multi"
+            ? "Multi Collection"
+            : formData.wasteType.join(","), 
+        routePolyline: "", 
+        role: "collector",
     };
+
+    console.log("collectorData", collectorData)
+
+    try {
+        
+        const res = await axios.post(
+            "http://localhost:3000/api/auth/collecter-register",
+            collectorData,
+            { headers: { "Content-Type": "application/json" } }
+        );
+
+        console.log("Registered successfully:", res.data);
+        alert(`Collector registered: ${res.data.collector.name}`);
+    } catch (error: any) {
+        console.error("Error registering collector:", error.response?.data || error.message);
+        alert(`Error: ${error.response?.data?.error || "Server error"}`);
+    }
+};
 
     return (
         <form onSubmit={handleSubmit} className="collector-form-container">

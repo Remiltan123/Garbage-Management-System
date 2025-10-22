@@ -73,36 +73,20 @@ const garbageReportSchema = new mongoose.Schema(
       default: "pending",
     },
 
-    collector: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // garbage collector
-      default: null,
-    },
-
-    collectedAt: {
-      type: Date,
-    },
-
-    rejectionReason: {
-      type: String,
-      trim: true,
-    },
-
     assignedAt: {
       type: Date,
     },
   },
   {
-    timestamps: true, // Adds createdAt and updatedAt
+    timestamps: true, 
   }
 );
 
-// Index for faster queries
 garbageReportSchema.index({ status: 1, createdAt: -1 });
 garbageReportSchema.index({ collector: 1, status: 1 });
 garbageReportSchema.index({ "location.latitude": 1, "location.longitude": 1 });
 
-// Middleware to update points when weight changes
+
 garbageReportSchema.pre("save", function (next) {
   if (this.isModified("weight")) {
     this.points = Math.round(this.weight * 100);
@@ -110,7 +94,7 @@ garbageReportSchema.pre("save", function (next) {
   next();
 });
 
-// Middleware to set collectedAt when status changes to collected
+
 garbageReportSchema.pre("save", function (next) {
   if (
     this.isModified("status") &&

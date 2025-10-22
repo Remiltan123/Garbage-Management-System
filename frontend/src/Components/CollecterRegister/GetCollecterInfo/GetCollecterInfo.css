@@ -15,7 +15,7 @@
     text-align: center;
     font-size: 22px;
     font-weight: 700;
-    color: #1f2937; /* dark gray text */
+    color: #1f2937;
 }
 
 .collector-form-input {
@@ -27,7 +27,7 @@
 .collector-form-input label {
     font-size: 14px;
     font-weight: 500;
-    color: #4b5563; /* medium gray for label */
+    color: #4b5563; 
 }
 
 .collector-form-input input,
@@ -35,8 +35,8 @@
     width: 100%;
     padding: 12px;
     border-radius: 8px;
-    border: 1px solid #d1d5db; /* light gray border */
-    background-color: #ffffff; /* remove colored background */
+    border: 1px solid #d1d5db; 
+    background-color: #ffffff;
     font-size: 14px;
     color: #111827;
     outline: none;
@@ -45,7 +45,7 @@
 
 .collector-form-input input:focus,
 .collector-form-input select:focus {
-    border-color: #3b82f6; /* blue border on focus */
+    border-color: #3b82f6; 
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
@@ -64,7 +64,7 @@
 }
 
 .submit-btn {
-    background-color: rgb(102, 102, 245); /* green professional */
+    background-color: rgb(102, 102, 245); 
     color: white;
     padding: 14px;
     border-radius: 8px;

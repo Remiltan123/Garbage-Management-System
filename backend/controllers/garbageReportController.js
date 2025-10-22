@@ -1,61 +1,8 @@
-// import GarbageReport from "../models/GarbageReport.js";
 
-// Create a new garbage report
-// export const createGarbageReport = async (req, res) => {
-//   try {
-//     const {
-//       reporterName,
-//       weight,
-//       collectionDeadline,
-//       additionalDetails,
-//       garbageImage,
-//       location,
-//     } = req.body;
-
-//     // Validate required fields
-//     if (!reporterName || !weight || !collectionDeadline || !location) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Please provide all required fields",
-//       });
-//     }
-
-//     // Validate location data
-//     if (!location.latitude || !location.longitude || !location.address) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Complete location data is required",
-//       });
-//     }
-
-//     // Create new report
-//     const garbageReport = new GarbageReport({
-//       reporterName,
-//       reporter: req.user?._id, // Optional: if user is authenticated
-//       weight,
-//       collectionDeadline,
-//       additionalDetails,
-//       garbageImage,
-//       location,
-//     });
-
-//     await garbageReport.save();
-
-//     res.status(201).json({
-//       success: true,
-//       message: "Garbage report submitted successfully",
-//       data: garbageReport,
-//     });
-//   } catch (error) {
-//     console.error("Error creating garbage report:", error);
-//     res.status(500).json({
-//       success: false,
-//       message: error.message || "Failed to submit garbage report",
-//     });
-//   }
-// };
 
 import GarbageReport from "../models/GarbageReport.js";
+import CollectorAssignment from "../models/CollectorAssignment.js";
+import { findNearestCollector } from "../Utility/getDrivingDistance.js";
 
 export const createGarbageReport = async (req, res) => {
   try {
@@ -68,31 +15,16 @@ export const createGarbageReport = async (req, res) => {
       longitude,
       address,
     } = req.body;
-    console.log("Received body:", req.body);
-    console.log("Received file:", req.file);
 
-    // File uploaded via Multer
     const garbageImage = req.file ? req.file.path : null;
 
-    // Validate required fields
-    if (
-      !reporterName ||
-      !weight ||
-      !collectionDeadline ||
-      !latitude ||
-      !longitude ||
-      !address
-    ) {
-      return res.status(400).json({
-        success: false,
-        message: "Please provide all required fields",
-      });
+    if (!reporterName || !weight || !collectionDeadline || !latitude || !longitude || !address) {
+      return res.status(400).json({ message: "Missing required fields" });
     }
 
     const location = { latitude, longitude, address };
 
-    // Create new report
-    const garbageReport = new GarbageReport({
+    const report = await GarbageReport.create({
       reporterName,
       reporter: req.user?._id || null,
       weight,
@@ -100,25 +32,44 @@ export const createGarbageReport = async (req, res) => {
       additionalDetails,
       garbageImage,
       location,
+      status: "in-progress",
     });
 
-    await garbageReport.save();
+   
+    const nearest = await findNearestCollector({ lat: latitude, lon: longitude });
+
+    if (nearest && nearest.collector) {
+      const assignment = await CollectorAssignment.create({
+        collector: nearest.collector._id,
+        report: report._id,
+        distance: nearest.distance,
+        duration: nearest.duration,
+      });
+
+   
+      report.collector = nearest.collector._id;
+      await report.save();
+
+      return res.status(201).json({
+        success: true,
+        message: `Report submitted and assigned to ${nearest.collector.name}`,
+        data: { report, assignment },
+      });
+    }
 
     res.status(201).json({
       success: true,
-      message: "Garbage report submitted successfully",
-      data: garbageReport,
+      message: "Report submitted but no collector found nearby",
+      data: report,
     });
   } catch (error) {
-    console.error("Error creating garbage report:", error);
-    res.status(500).json({
-      success: false,
-      message: error.message || "Failed to submit garbage report",
-    });
+    console.error("Error creating report:", error);
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// Get all garbage reports (with filters)
+
+
 export const getAllGarbageReports = async (req, res) => {
   try {
     const {
