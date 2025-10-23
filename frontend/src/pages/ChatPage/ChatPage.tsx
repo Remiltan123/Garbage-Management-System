@@ -102,7 +102,7 @@ const ChatPage = () => {
     );
     if (data.success) {
       setNewMessage("");
-      fetchMessages(selectedUser._id); // Refresh messages
+      fetchMessages(selectedUser._id);
     } else {
       alert(`Error sending message: ${data.message} - ${data.error}`);
     }
@@ -110,9 +110,6 @@ const ChatPage = () => {
 
   return (
     <div className="chat-page">
-      <button className="back-button" onClick={() => navigate(-1)}>
-        {"<-"}
-      </button>
       <div className="chat-container">
         <div className="users-list">
           <h3>Users</h3>

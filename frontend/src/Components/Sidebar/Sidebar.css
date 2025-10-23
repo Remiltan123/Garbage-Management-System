@@ -3,7 +3,8 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
-  width: 20%;
+  width: 210px;
+  min-width: 210px;
   box-shadow: 2px 0 15px rgba(0, 0, 0, 0.2);
 }
 

@@ -35,28 +35,31 @@ function App() {
             }
           />
 
-          <Route
-            path="/reporter"
-            element={
-              <ProtectedRoute allowedRoles={["reporter"]}>
-                <DashBoard />
-              </ProtectedRoute>
-            }
+          <Route path="/reporter" element={
+            <ProtectedRoute allowedRoles={["reporter"]}>
+              <DashBoard />
+            </ProtectedRoute>
+          }
           >
             <Route path="wastage-classifier" element={<WasteageClassifier />} />
             <Route path="report-garbage" element={<ReportGarbage />} />
             <Route path="profile" element={<div>Profile content here</div>} />
             <Route path="settings" element={<div>settings content here</div>} />
+            <Route path="chat"
+              element={
+                <ProtectedRoute allowedRoles={["reporter", "collector", "admin"]}>
+                  <ChatPage />
+                </ProtectedRoute>
+              } />
           </Route>
           <Route
-            path="/chat"
+            path="chat"
             element={
               <ProtectedRoute allowedRoles={["reporter", "collector", "admin"]}>
                 <ChatPage />
               </ProtectedRoute>
             }
           />
-          <Route path="Request report" element={<CollecterGetRequest/>}/>
         </Routes>
       </BrowserRouter>
     </>

@@ -45,7 +45,7 @@ export function Sidebar() {
           </li>
           <li>
             <NavLink
-              to="/chat"
+              to="chat"
               className={({ isActive }) => (isActive ? "active-link" : "")}
             >
               <FaComments /> <span>Chat</span>

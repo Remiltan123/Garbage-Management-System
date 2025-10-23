@@ -29,7 +29,7 @@ export function CollectorSidebar({
       icon: <FaComments />,
     },
      {
-      id: "Request report",
+      id: "requestreport",
       label: "Request report",
       icon: <FaCodePullRequest />,
     },
