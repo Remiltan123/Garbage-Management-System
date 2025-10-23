@@ -9,6 +9,7 @@ import ChatPage from "./pages/ChatPage/ChatPage";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { CollecterGetRequest } from "./Components/ColectorReportRequest/ColectorReportRequest";
 
 function App() {
   return (
@@ -55,6 +56,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="Request report" element={<CollecterGetRequest/>}/>
         </Routes>
       </BrowserRouter>
     </>

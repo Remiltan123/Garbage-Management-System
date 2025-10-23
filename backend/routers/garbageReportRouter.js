@@ -26,4 +26,6 @@ router.get(
   garbageReportController.getReportsByCollector
 );
 
+router.get("/reports-assigned/:collecter_id", garbageReportController.getAssignGarbageForCollector)
+
 export default router;

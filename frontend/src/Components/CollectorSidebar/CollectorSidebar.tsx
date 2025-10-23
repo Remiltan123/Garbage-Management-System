@@ -5,6 +5,7 @@ import {
   FaSignOutAlt,
   FaComments,
 } from "react-icons/fa";
+import { FaCodePullRequest } from "react-icons/fa6";
 import awarenessImage from "../../assets/images/awareness_of_waste_recycling.png";
 
 interface CollectorSidebarProps {
@@ -26,6 +27,11 @@ export function CollectorSidebar({
       id: "chat",
       label: "Chat",
       icon: <FaComments />,
+    },
+     {
+      id: "Request report",
+      label: "Request report",
+      icon: <FaCodePullRequest />,
     },
     {
       id: "Logout",

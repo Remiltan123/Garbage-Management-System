@@ -4,6 +4,7 @@ import GarbageReport from "../models/GarbageReport.js";
 import CollectorAssignment from "../models/CollectorAssignment.js";
 import { findNearestCollector } from "../Utility/getDrivingDistance.js";
 
+
 export const createGarbageReport = async (req, res) => {
   try {
     const {
@@ -35,7 +36,7 @@ export const createGarbageReport = async (req, res) => {
       status: "in-progress",
     });
 
-   
+
     const nearest = await findNearestCollector({ lat: latitude, lon: longitude });
 
     if (nearest && nearest.collector) {
@@ -46,7 +47,7 @@ export const createGarbageReport = async (req, res) => {
         duration: nearest.duration,
       });
 
-   
+
       report.collector = nearest.collector._id;
       await report.save();
 
@@ -349,3 +350,35 @@ export const getReportStatistics = async (req, res) => {
     });
   }
 };
+
+export const getAssignGarbageForCollector = async (req, res) => {
+  try {
+    const { collecter_id } = req.params;
+    if (!collecter_id) {
+      res.status(201).json({
+        success: false,
+        message: "Coller id is must",
+      })
+    }
+
+    const Response = await  CollectorAssignment.find({ collector: collecter_id })
+    if (!Response || Response.length === 0) {
+      res.status(201).json({
+        success: false,
+        message: "No report assgin for collecter",
+      })
+    }
+
+    res.status(200).json({
+      success: true,
+      report_data : Response
+    })
+
+  } catch (err) {
+    console.error("Error fetching statistics:", err);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch reports for collecter",
+    });
+  }
+}

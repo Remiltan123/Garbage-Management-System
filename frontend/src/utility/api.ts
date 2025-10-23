@@ -256,3 +256,27 @@ export const sendMessage = async (
     return { success: false, message: "Error sending message" };
   }
 };
+
+export const getReportForCollector = async (collector_id: string) => {
+  try {
+   
+    if (!collector_id) {
+      console.log("Please provide the collector ID");
+      return { success: false, message: "Collector ID is required" };
+    }
+
+    const response = await fetch(`http://localhost:3000/api/garbage/reports-assigned/${collector_id}`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    const data = await response.json();
+    return data; 
+
+  } catch (err: any) {
+    console.error("Error fetching reports:", err);
+    return { success: false, message: `Error msg: ${err.message}` };
+  }
+};

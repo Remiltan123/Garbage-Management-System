@@ -5,6 +5,7 @@ import { CollectorLocations } from "../../Components/CollectorLocations/Collecto
 import { useNavigate } from "react-router-dom";
 import { toastSucces } from "../../Model/toast";
 import { logout } from "../../utility/api";
+import { CollecterGetRequest } from '../../Components/ColectorReportRequest/ColectorReportRequest'
 
 const CollectorPage = () => {
   const navigate = useNavigate();
@@ -17,6 +18,8 @@ const CollectorPage = () => {
       toastSucces("Logout Successfully");
     } else if (tab === "chat") {
       navigate("/chat");
+    } else if(tab === 'Request report'){
+      navigate('/Request report')
     }
     setActiveTab(tab);
   };
@@ -26,6 +29,7 @@ const CollectorPage = () => {
       <CollectorSidebar activeTab={activeTab} onTabChange={handleTabChange} />
       <div className="collector-content">
         {activeTab === "locations" && <CollectorLocations />}
+        {activeTab === "Request report" && <CollecterGetRequest/>}
       </div>
     </div>
   );
