@@ -97,7 +97,7 @@ export const login = async (req, res) => {
 
 
     const account = user || collector;
-    const role = user ? "reporter" : "collector";
+    const role = user ?  user.role : collector.role;
 
 
     const isPasswordValid = await bcrypt.compare(password, account.password);

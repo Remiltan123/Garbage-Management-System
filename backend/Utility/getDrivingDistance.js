@@ -32,7 +32,39 @@ async function getDrivingDistance(origin, destination) {
 }
 
 
+// export async function findNearestCollector(location) {
+//   const collectors = await Collector.find();
+
+//   let nearestCollector = null;
+//   let minDistance = Infinity;
+//   let minDuration = Infinity;
+
+//   for (const collector of collectors) {
+//     const toStart = await getDrivingDistance(location, collector.start);
+//     const toEnd = await getDrivingDistance(location, collector.end);
+
+//     const shortest = Math.min(toStart.distance, toEnd.distance);
+//     const shortestDuration = Math.min(toStart.duration, toEnd.duration);
+
+//     if (shortest < minDistance) {
+//       minDistance = shortest;
+//       minDuration = shortestDuration;
+//       nearestCollector = collector;
+//     }
+//   }
+
+//   if (!nearestCollector) return null;
+
+//   return {
+//     collector: nearestCollector,
+//     distance: minDistance  ,      
+//     duration: minDuration,      
+//   };
+// }
+
 export async function findNearestCollector(location) {
+  console.log("Incoming Location:", location);
+
   const collectors = await Collector.find();
 
   let nearestCollector = null;
@@ -40,8 +72,17 @@ export async function findNearestCollector(location) {
   let minDuration = Infinity;
 
   for (const collector of collectors) {
-    const toStart = await getDrivingDistance(location, collector.start);
-    const toEnd = await getDrivingDistance(location, collector.end);
+    const toStart = await getDrivingDistance(
+      { lat: location.lat, lon: location.lon },
+      { lat: collector.start.lat, lon: collector.start.lon }
+    );
+
+    const toEnd = await getDrivingDistance(
+      { lat: location.lat, lon: location.lon },
+      { lat: collector.end.lat, lon: collector.end.lon }
+    );
+
+    console.log("Checking:", collector.name, { toStart, toEnd });
 
     const shortest = Math.min(toStart.distance, toEnd.distance);
     const shortestDuration = Math.min(toStart.duration, toEnd.duration);
@@ -57,7 +98,7 @@ export async function findNearestCollector(location) {
 
   return {
     collector: nearestCollector,
-    distance: minDistance  ,      
-    duration: minDuration,      
+    distance: minDistance,
+    duration: minDuration,
   };
 }

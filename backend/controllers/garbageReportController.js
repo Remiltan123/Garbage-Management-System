@@ -38,6 +38,8 @@ export const createGarbageReport = async (req, res) => {
 
 
     const nearest = await findNearestCollector({ lat: latitude, lon: longitude });
+    console.log("NEAREST =", nearest);
+
 
     if (nearest && nearest.collector) {
       const assignment = await CollectorAssignment.create({

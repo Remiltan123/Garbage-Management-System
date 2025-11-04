@@ -50,6 +50,8 @@ export function LoginPage() {
           ? await userRegister(formData)
           : await userLogin(formData);
 
+          console.log("res", res)
+
       if (res.success) {
         toast.success(res.message, {
           position: "top-right",
