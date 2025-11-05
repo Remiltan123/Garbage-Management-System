@@ -70,6 +70,7 @@ export async function findNearestCollector(location) {
   let nearestCollector = null;
   let minDistance = Infinity;
   let minDuration = Infinity;
+  let nearestPoint = null;
 
   for (const collector of collectors) {
     const toStart = await getDrivingDistance(
@@ -91,6 +92,7 @@ export async function findNearestCollector(location) {
       minDistance = shortest;
       minDuration = shortestDuration;
       nearestCollector = collector;
+      nearestPoint =  shortest === toStart.distance ? "start" : "end"
     }
   }
 
@@ -100,5 +102,6 @@ export async function findNearestCollector(location) {
     collector: nearestCollector,
     distance: minDistance,
     duration: minDuration,
-  };
+    nearestPoint
+  }
 }

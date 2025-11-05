@@ -63,8 +63,10 @@ export const CollecterGetRequest = () => {
                 <p><strong>Status:</strong> {status}</p>
 
                 <p className="distance-duration">
-                  <strong>Distance:</strong> {(distance / 1000).toFixed(1)} km |
-                  <strong> Duration:</strong> {Math.round(duration / 60)} mins
+                  <strong>Distance:</strong> {(item.distance / 1000).toFixed(2)} Km from {item.nearestPoint} of your trip
+                </p>
+                <p>
+                <strong> Duration:</strong> {Math.round(duration / 60)} mins
                 </p>
 
                 <p className="assigned-time">

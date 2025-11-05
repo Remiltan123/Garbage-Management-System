@@ -14,6 +14,7 @@ const CollectorAssignmentSchema = new mongoose.Schema(
     },
     distance: { type: Number }, 
     duration: { type: Number }, 
+    nearestPoint: {type: String},
     status: {
       type: String,
       enum: ["assigned", "in-progress", "completed"],

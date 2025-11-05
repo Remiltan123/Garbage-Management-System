@@ -1,14 +1,14 @@
+
+
 import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { getCollectorGarbageReports } from "../../utility/api";
-import { GarbageReport } from "../../Model/model";
+import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
+import { getReportForCollector } from "../../utility/api";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./CollectorLocations.css";
 
-// Fix for default markers in react-leaflet
-delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })
-  ._getIconUrl;
+// Fix default marker issue
+delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:
     "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
@@ -19,20 +19,20 @@ L.Icon.Default.mergeOptions({
 });
 
 export function CollectorLocations() {
-  const [reports, setReports] = useState<GarbageReport[]>([]);
+  const [reports, setReports] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [userPosition, setUserPosition] = useState<[number, number] | null>(
-    null
-  );
+  const [userPosition, setUserPosition] = useState<[number, number] | null>(null);
+  const [selectedRoute, setSelectedRoute] = useState<[number, number][]>([]);
 
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const collectorId = "68ef765253e2a08a96e88aa7";
-        const response = await getCollectorGarbageReports(collectorId);
+        const collectorId: string = localStorage.getItem("collecter_id") as string;
+        const response = await getReportForCollector(collectorId);
+
         if (response.success) {
-          setReports(response.data);
+          setReports(response.report_data);
         } else {
           setError("Failed to fetch reports");
         }
@@ -50,44 +50,26 @@ export function CollectorLocations() {
   useEffect(() => {
     if (navigator.geolocation) {
       const watchId = navigator.geolocation.watchPosition(
-        (position) => {
-          setUserPosition([
-            position.coords.latitude,
-            position.coords.longitude,
-          ]);
+        (position) => { 
+          setUserPosition([position.coords.latitude, position.coords.longitude]);
         },
-        (error) => {
-          console.error("Geolocation error:", error);
-        },
+        (error) => console.error("Geolocation error:", error),
         { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
       );
-      return () => {
-        navigator.geolocation.clearWatch(watchId);
-      };
+      return () => navigator.geolocation.clearWatch(watchId);
     } else {
       console.log("Geolocation not supported");
     }
   }, []);
 
-  if (loading) {
-    return (
-      <div className="collector-locations-loading">
-        Loading garbage locations...
-      </div>
-    );
-  }
+  if (loading) return <div className="collector-locations-loading">Loading garbage locations...</div>;
+  if (error) return <div className="collector-locations-error">Error: {error}</div>;
 
-  if (error) {
-    return <div className="collector-locations-error">Error: {error}</div>;
-  }
-
-  // Default center (can be adjusted based on locations)
   const defaultCenter: [number, number] =
     reports.length > 0
-      ? [reports[0].location.latitude, reports[0].location.longitude]
-      : [6.9271, 79.8612]; // Colombo coordinates as fallback
+      ? [reports[0].report.location.latitude, reports[0].report.location.longitude]
+      : [6.9271, 79.8612]; // Colombo fallback
 
-  // Custom icon for user location
   const userIcon = new L.Icon({
     iconUrl:
       "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
@@ -103,51 +85,53 @@ export function CollectorLocations() {
     <div className="collector-locations">
       <h2>Garbage Collection Locations</h2>
       <div className="map-container">
-        <MapContainer
-          center={defaultCenter}
-          zoom={13}
-          style={{ height: "600px", width: "100%" }}
-        >
+        <MapContainer center={defaultCenter} zoom={13} style={{ height: "600px", width: "100%" }}>
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            attribution='&copy; OpenStreetMap contributors'
           />
-          {reports.map((report) => (
-            <Marker
-              key={report._id}
-              position={[report.location.latitude, report.location.longitude]}
-            >
-              <Popup>
-                <div className="popup-content">
-                  <h3>Reporter: {report.reporterName}</h3>
-                  <p>
-                    <strong>Address:</strong> {report.location.address}
-                  </p>
-                  <p>
-                    <strong>Weight:</strong> {report.weight} kg
-                  </p>
-                  <p>
-                    <strong>Status:</strong> {report.status}
-                  </p>
-                  <p>
-                    <strong>Deadline:</strong>{" "}
-                    {new Date(report.collectionDeadline).toLocaleDateString()}
-                  </p>
-                  <p>
-                    <strong>Details:</strong> {report.additionalDetails}
-                  </p>
-                  <p>
-                    <strong>Points:</strong> {report.points}
-                  </p>
-                </div>
-              </Popup>
-            </Marker>
-          ))}
+
+          {reports.map((item) => {
+            const r = item.report;
+            return (
+              <Marker
+                key={r._id}
+                position={[r.location.latitude, r.location.longitude]}
+                eventHandlers={{
+                  click: () => {
+                    if (userPosition) {
+                      setSelectedRoute([
+                        userPosition,
+                        [r.location.latitude, r.location.longitude],
+                      ]);
+                    }
+                  },
+                }}
+              >
+                <Popup>
+                  <div className="popup-content">
+                    <h3>Reporter: {r.reporterName}</h3>
+                    <p><strong>Address:</strong> {r.location.address}</p>
+                    <p><strong>Weight:</strong> {r.weight} kg</p>
+                    <p><strong>Status:</strong> {r.status}</p>
+                    <p><strong>Deadline:</strong> {new Date(r.collectionDeadline).toLocaleDateString()}</p>
+                    <p><strong>Details:</strong> {r.additionalDetails}</p>
+                    <p><strong>Points:</strong> {r.points}</p>
+                    <p><strong>Distance:</strong> {(item.distance / 1000).toFixed(2)} Km from {item.nearestPoint} of your trip</p>
+                    <p><strong>Duration:</strong> {Math.round(item.duration / 60)} mins</p>
+                  </div>
+                </Popup>
+              </Marker>
+            );
+          })}
+
           {userPosition && (
             <Marker position={userPosition} icon={userIcon}>
               <Popup>You are here</Popup>
             </Marker>
           )}
+
+          {selectedRoute.length > 0 && <Polyline positions={selectedRoute} />}
         </MapContainer>
       </div>
     </div>

@@ -47,6 +47,7 @@ export const createGarbageReport = async (req, res) => {
         report: report._id,
         distance: nearest.distance,
         duration: nearest.duration,
+        nearestPoint: nearest.nearestPoint
       });
 
 
@@ -381,14 +382,16 @@ export const getAssignGarbageForCollector = async (req, res) => {
           assignedAt: report.assignedAt,
           distance: report.distance,
           duration: report.duration,
+          status: report.status,
+          nearestPoint: report.nearestPoint,
           report: reportDetails ? reportDetails : null,
         };
       })
     )
 
-     res.status(200).json({
+    res.status(200).json({
       success: true,
-      report_data : combinedData 
+      report_data: combinedData
     })
 
 
