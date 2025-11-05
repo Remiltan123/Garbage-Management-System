@@ -363,18 +363,35 @@ export const getAssignGarbageForCollector = async (req, res) => {
       })
     }
 
-    const Response = await  CollectorAssignment.find({ collector: collecter_id })
-    if (!Response || Response.length === 0) {
-      res.status(201).json({
+    const assignments = await CollectorAssignment.find({ collector: collecter_id });
+
+    if (!assignments || assignments.length === 0) {
+      return res.status(200).json({
         success: false,
-        message: "No report assgin for collecter",
-      })
+        message: "No reports assigned for this collector",
+        report_data: [],
+      });
     }
 
-    res.status(200).json({
+    const combinedData = await Promise.all(
+      assignments.map(async (report) => {
+        const reportDetails = await GarbageReport.findById(report.report)
+        return {
+          assignmentId: report._id,
+          assignedAt: report.assignedAt,
+          distance: report.distance,
+          duration: report.duration,
+          report: reportDetails ? reportDetails : null,
+        };
+      })
+    )
+
+     res.status(200).json({
       success: true,
-      report_data : Response
+      report_data : combinedData 
     })
+
+
 
   } catch (err) {
     console.error("Error fetching statistics:", err);
@@ -384,3 +401,5 @@ export const getAssignGarbageForCollector = async (req, res) => {
     });
   }
 }
+
+
