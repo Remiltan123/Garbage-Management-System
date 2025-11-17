@@ -10,8 +10,13 @@ import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { CollecterGetRequest } from "./Components/ColectorReportRequest/ColectorReportRequest";
+import ProfilePage from "./pages/ProfilePage/ProfilePage";
+import EducationPage from "./pages/EducationPage/EducationPage";
+
 
 function App() {
+
+  
   return (
     <>
       <ToastContainer />
@@ -43,7 +48,8 @@ function App() {
           >
             <Route path="wastage-classifier" element={<WasteageClassifier />} />
             <Route path="report-garbage" element={<ReportGarbage />} />
-            <Route path="profile" element={<div>Profile content here</div>} />
+            <Route path="profile" element={<ProfilePage />} />
+            <Route path="education" element={<EducationPage/>}/>
             <Route path="settings" element={<div>settings content here</div>} />
             <Route path="chat"
               element={

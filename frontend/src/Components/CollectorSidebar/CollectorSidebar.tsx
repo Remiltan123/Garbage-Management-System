@@ -34,6 +34,11 @@ export function CollectorSidebar({
       icon: <FaCodePullRequest />,
     },
     {
+      id: "profile",
+      label: "Profile",
+      icon: <FaUser/>,
+    },
+    {
       id: "Logout",
       label: "Logout",
       icon: <FaSignOutAlt />,

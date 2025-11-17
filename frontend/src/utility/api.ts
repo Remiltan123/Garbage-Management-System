@@ -280,3 +280,30 @@ export const getReportForCollector = async (collector_id: string) => {
     return { success: false, message: `Error msg: ${err.message}` };
   }
 };
+
+
+
+export const getUsers = async (user_id: string) => {
+  try {
+   
+    if (!user_id) {
+      console.log("Please provide the collector ID");
+      return { success: false, message: "Collector ID is required" };
+    }
+
+    const response = await fetch(`http://localhost:3000/api/auth/getUser/${user_id}`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    const data = await response.json();
+    return data; 
+
+  } catch (err: any) {
+    console.error("Error fetching reports:", err);
+    return { success: false, message: `Error msg: ${err.message}` };
+  }
+};
+
