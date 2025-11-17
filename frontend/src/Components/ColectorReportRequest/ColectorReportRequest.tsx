@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { getReportForCollector } from "../../utility/api";
 import './ColectorReportRequest.css'
+import { CancelPopUP } from "../CancelPopUp/CancelPopUp";
+import { toastError } from "../../Model/toast";
 
 export const CollecterGetRequest = () => {
   const [collectorReports, setCollectorReports] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showCancelPopup, setShowCancelPopup] = useState(false);
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -34,6 +37,15 @@ export const CollecterGetRequest = () => {
   }, []);
 
   console.log(collectorReports)
+
+  const handleCancelSubmit = (reason: string) => {
+    console.log("Cancel reason:", reason);
+    setShowCancelPopup(false);
+
+    // Call backend API here to update cancellation status
+  };
+
+
   return (
     <div className="collector-container">
       <h2 className="collector-title">Assigned Garbage Reports</h2>
@@ -60,13 +72,13 @@ export const CollecterGetRequest = () => {
 
                 <p><strong>Weight:</strong> {report.weight} kg</p>
                 <p><strong>Address:</strong> {report.location.address}</p>
-                <p><strong>Status:</strong> {status}</p>
+                <p><strong>Points:</strong> {report.points}</p>
 
                 <p className="distance-duration">
                   <strong>Distance:</strong> {(item.distance / 1000).toFixed(2)} Km from {item.nearestPoint} of your trip
                 </p>
                 <p>
-                <strong> Duration:</strong> {Math.round(duration / 60)} mins
+                  <strong> Duration:</strong> {Math.round(duration / 60)} mins
                 </p>
 
                 <p className="assigned-time">
@@ -79,7 +91,7 @@ export const CollecterGetRequest = () => {
                   {status === "assigned" ? (
                     <>
                       <button className="accept-btn">Accept</button>
-                      <button className="cancel-btn">Cancel</button>
+                      <button className="cancel-btn" onClick={(e)=> setShowCancelPopup(true)}>Cancel</button>
                     </>
                   ) : status === "accepted" ? (
                     <button className="complete-btn">Complete</button>
@@ -91,6 +103,13 @@ export const CollecterGetRequest = () => {
             );
           })}
         </div>
+      )}
+
+      {showCancelPopup && (
+        <CancelPopUP 
+          onClose={() => setShowCancelPopup(false)}
+          onSubmit={handleCancelSubmit}
+        />
       )}
     </div>
   );
