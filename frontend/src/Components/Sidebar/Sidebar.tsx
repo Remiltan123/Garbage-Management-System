@@ -35,20 +35,20 @@ export function Sidebar() {
               <FaTrash /> <span>Report Garbage</span>
             </NavLink>
           </li>
-          <li>
-            <NavLink
-              to="profile"
-              className={({ isActive }) => (isActive ? "active-link" : "")}
-            >
-              <FaUserAlt /> <span>Profile</span>
-            </NavLink>
-          </li>
            <li>
             <NavLink
               to="education"
               className={({ isActive }) => (isActive ? "active-link" : "")}
             >
               <FaUserAlt /> <span>Education</span>
+            </NavLink>
+          </li>
+           <li>
+            <NavLink
+              to="profile"
+              className={({ isActive }) => (isActive ? "active-link" : "")}
+            >
+              <FaUserAlt /> <span>Profile</span>
             </NavLink>
           </li>
           <li>
