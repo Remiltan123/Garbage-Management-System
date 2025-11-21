@@ -54,27 +54,28 @@ export function AdminReports() {
 
   // Fetch reports from backend
   const fetchReports = async (status?: string) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const url =
-        status && status !== "all"
-          ? `http://localhost:3000/api/garbage/reports?status=${status}`
-          : "http://localhost:3000/api/garbage/reports";
+  setLoading(true);
+  setError(null);
+  try {
+    const url =
+      status && status !== "all"
+        ? `http://localhost:3000/api/garbage/reports?status=${status}`
+        : "http://localhost:3000/api/garbage/reports";
 
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error("Failed to fetch reports");
-      }
-      const data = await response.json();
-      setReports(data.data || []);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
-      console.error("Error fetching reports:", err);
-    } finally {
-      setLoading(false);
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Failed to fetch reports");
     }
-  };
+
+    const data = await response.json();
+    setReports(data || []); // <-- change this line if backend returns array directly
+  } catch (err) {
+    setError(err instanceof Error ? err.message : "An error occurred");
+    console.error("Error fetching reports:", err);
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     fetchReports(activeFilter === "all" ? undefined : activeFilter);

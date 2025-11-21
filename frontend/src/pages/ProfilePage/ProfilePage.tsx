@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./ProfilePage.css";
 import { getUsers } from "../../utility/api";
-import { FaRegEdit, FaSignOutAlt } from "react-icons/fa";
+import { FaRegEdit, FaUserAlt , FaSignOutAlt} from "react-icons/fa";
 
 export default function ProfilePage() {
 
@@ -44,6 +44,7 @@ export default function ProfilePage() {
 
                 <div className="profile-header">
                     <h2>{user?.name || "User"}</h2>
+                    <div><FaUserAlt size={40} color="black"/></div>
                     <p className="role-tag">{user?.role}</p>
                 </div>
 

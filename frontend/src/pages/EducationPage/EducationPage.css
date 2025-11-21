@@ -71,3 +71,7 @@
 .read-more:hover {
     text-decoration: underline;
 }
+
+.tip-card p{
+    color: black;
+}

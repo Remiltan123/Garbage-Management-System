@@ -116,12 +116,13 @@ export const getAllGarbageReports = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("Error fetching garbage reports:", error);
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch garbage reports",
-    });
-  }
+  console.error("Error fetching garbage reports:", error);
+  res.status(500).json({
+    success: false,
+    message: error.message, // <-- show actual error
+  });
+}
+  
 };
 
 // Get single garbage report by ID

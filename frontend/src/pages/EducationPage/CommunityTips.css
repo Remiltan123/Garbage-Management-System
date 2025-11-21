@@ -1,0 +1,115 @@
+.community-tips-section {
+    padding: 20px;
+    margin: 30px 0;
+    background-color: #e0f7fa;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.community-tips-section h2 {
+    color: #00bcd4;
+}
+
+.submit-tip-button-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.submit-tip-button-container button {
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #0097a7;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-tip-button-container button:hover {
+    background-color: #007c91;
+}
+
+.tips-list {
+    margin-top: 10px;
+}
+
+.tip-card {
+    border: 1px dashed #00acc1;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.tip-text {
+    font-style: italic;
+}
+
+.tip-user {
+    text-align: right;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.community-tips-section{
+    color: rgb(146, 135, 135);
+    font-weight: bold;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    text-align: left;
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #0097a7;
+}
+
+.modal-content textarea,
+.modal-content input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal-buttons button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal-buttons button[type="submit"] {
+    background-color: #0097a7;
+    color: white;
+}
+
+.modal-buttons button[type="button"] {
+    background-color: #a09999;
+}
